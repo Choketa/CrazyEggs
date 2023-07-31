@@ -1,0 +1,35 @@
+name: CrazyEggs
+version: '${project.version}'
+main: me.choketa.crazyeggs.CrazyEggs
+api-version: '1.20'
+authors: [Chocketa]
+description: Commit crimes with deadly eggs!
+commands:
+  getegg:
+    usage: /getegg <player> amount
+    description: Give eggs to a player
+    permission: crazyeggs.getegg
+    aliases:
+      - giveegg
+      - obtainegg
+permissions:
+  crazyeggs.*:
+    description: CrazyEggs wildcard
+    children:
+      crazyeggs.getegg: true
+      crazyeggs.craft: true
+      crazyeggs.use: true
+  crazyeggs.getegg:
+    description: Allows you to perform the /getegg command
+    default: op
+  crazyeggs.craft:
+    description: Allows you to craft the Crazy Egg
+    default: true
+  crazyeggs.use:
+    description: Allows you to use the Crazy Egg
+    default: true
+
+
+
+
+

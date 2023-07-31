@@ -1,0 +1,57 @@
+#The configuration file for the plugin CrazyEggs
+#Use with caution.
+
+#Big Note: Won't apply changes to already existing eggs.
+
+crazy-egg-name: "&c&lCrazy Egg"
+
+#If you want to remove lore, only keep the dash
+crazy-egg-lore:
+  - "&cKill with the crazy egg!"
+
+#Instructions: In the crazy-egg-recipe, put 3 letters in each row. The letter should be the first letter of
+#the material. If you want to keep an empty slot, simply remove a letter where you want it to be empty and
+#leave a space where it's empty. Imagine this as a crafting table.
+crazy-egg-recipe:
+  - "EEE"
+  - "ETE"
+  - "EEE"
+#Materials should be in uppercase and do not use materials with the same first letter; it would break the crafting.
+materials:
+  - "EGG"
+  - "TNT"
+
+#Determines the ability to craft the egg
+is-craftable: true
+
+#Determines the ability to craft other items with the egg
+can-craft-items: false
+
+#Determines if a living entity will drop a spawn egg
+enable-spawn-eggs-drop: true
+
+#Determines if endermen have a special effect upon getting hit with the egg
+enable-enderman-effect: true
+
+#If you want to disable particles, simply remove the particle name
+default-particle: "DAMAGE_INDICATOR"
+#The number of particles
+particle-count: 5
+
+#The damage inflicted upon an entity when hit
+damage: 15
+
+# Determines the rarity of dropping a spawn egg (1/x) (by default, 1/10)
+spawn-egg-rarity: 10
+
+#Determines the amount of eggs given upon crafting
+upon-craft-amount: 5
+
+#Velocity of the hit entity upon impact. Feel free to experiment
+velocity-multiplier: 0.45
+velocity-set-y: 0.5
+
+
+#The sound played when an egg hits an entity
+#If you want to have no sound, simply remove the sound name
+sound-when-hit: "ENTITY_LIGHTNING_BOLT_IMPACT"
