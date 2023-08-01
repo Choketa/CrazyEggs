@@ -88,7 +88,8 @@ public class EggEvents implements Listener {
             Bukkit.getWorld(entity.getWorld().getName()).spawnParticle(particle,entity.getLocation(),plugin.getConfig().getInt("particle-count"));
 
             Vector direction = event.getEntity().getVelocity().multiply(plugin.getConfig().getDouble("velocity-multiplier"));
-            event.getHitEntity().setVelocity(direction.setY(plugin.getConfig().getDouble("velocity-set-y")));
+            entity.setVelocity(direction.setY(plugin.getConfig().getDouble("velocity-set-y")));
+            entity.setVelocity(direction);
             projectile.remove(player.getUniqueId());
 
 
@@ -99,7 +100,7 @@ public class EggEvents implements Listener {
                 if (eggMaterial == null) return;
                 ItemStack eggItem = new ItemStack(eggMaterial);
 
-                Bukkit.getWorld(player.getWorld().getName()).dropItem(event.getHitEntity().getLocation(), eggItem);
+                Bukkit.getWorld(player.getWorld().getName()).dropItem(entity.getLocation(), eggItem);
             }
     }
     //Adds the player to the Set
@@ -125,12 +126,9 @@ public class EggEvents implements Listener {
     //Disables the egg hatching
     @EventHandler
     public void onHatch(PlayerEggThrowEvent event) {
-        Player player = event.getPlayer();
-        final ItemStack item = player.getInventory().getItemInMainHand();
-        if (!isCrazyEgg(plugin, item) && !projectile.contains(player.getUniqueId())) return;
-        byte by = 0;
+        final ItemStack item = event.getEgg().getItem();
+        if (!isCrazyEgg(plugin, item)) return;
         event.setHatching(false);
-        event.setNumHatches(by);
 
     }
     @EventHandler

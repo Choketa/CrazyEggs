@@ -47,6 +47,7 @@ public class EggRecipe {
         ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(plugin,"egg"), eggItem());
         List<String> crazy_egg_recipe = plugin.getConfig().getStringList("crazy-egg-recipe");
         List<String> materials = plugin.getConfig().getStringList("materials");
+
         recipe.shape(crazy_egg_recipe.get(0), crazy_egg_recipe.get(1), crazy_egg_recipe.get(2));
         for (String material : materials) {
             recipe.setIngredient(material.charAt(0), Material.matchMaterial(material));
