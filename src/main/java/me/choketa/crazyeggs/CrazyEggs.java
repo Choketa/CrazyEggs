@@ -28,7 +28,7 @@ public final class CrazyEggs extends JavaPlugin {
                 getLogger().info("There is not a new update available.");
             } else {
                 getLogger().warning("There is a new update available!");
-                getLogger().warning("Go to  in order to update!");
+                getLogger().warning("Go to https://www.spigotmc.org/resources/1-20-crazyeggs.111676/ in order to update!");
             }
         });
 

@@ -20,7 +20,7 @@ public class OnOpJoinEvent implements Listener {
         new UpdateChecker(plugin, 111676).getVersion(version -> {
             if (!plugin.getDescription().getVersion().equals(version)) {
                 event.getPlayer().sendMessage(format("&4[CrazyEggs]: &6There is a new update available!"));
-                event.getPlayer().sendMessage(format("&4[CrazyEggs]: &6Go to  in order to update!"));
+                event.getPlayer().sendMessage(format("&4[CrazyEggs]: &6Go to https://www.spigotmc.org/resources/1-20-crazyeggs.111676/ in order to update!"));
             }
         });
     }
