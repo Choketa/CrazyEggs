@@ -55,3 +55,26 @@ velocity-set-y: 0.5
 #The sound played when an egg hits an entity
 #If you want to have no sound, simply remove the sound name
 sound-when-hit: "ENTITY_LIGHTNING_BOLT_IMPACT"
+
+
+#############################################################################################
+
+
+#The Egg Of Destruction
+destruction-egg-name: "&5&lDestruction Egg"
+
+#If you want to remove lore, only keep the dash
+destruction-egg-lore:
+  - "&4Dangerous weapon. Use foolishly."
+
+#Determines the ability to craft the egg
+is-destruction-craftable: true
+
+#Determines the amount of eggs given upon crafting
+upon-destruction-craft-amount: 2
+
+#Determines the power of the explosion (For reference, 4 is the power of regular TNT)
+power: 8
+
+#Cooldown for the destruction egg. Input in seconds.
+cooldown: 10

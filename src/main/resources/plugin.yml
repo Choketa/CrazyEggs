@@ -12,6 +12,15 @@ commands:
     aliases:
       - giveegg
       - obtainegg
+  getdestructionegg:
+    usage: /getdestructionegg <player> amount
+    description: Give eggs to a player
+    permission: crazyeggs.getegg
+    aliases:
+      - givedestructionegg
+      - obtaindestructionegg
+      - destructionegg
+      - destruction
 permissions:
   crazyeggs.*:
     description: CrazyEggs wildcard
@@ -19,6 +28,10 @@ permissions:
       crazyeggs.getegg: true
       crazyeggs.craft: true
       crazyeggs.use: true
+      crazyeggs.bypass.cooldown: true
+      crazyeggs.destruction.getegg: true
+      crazyeggs.destruction.craft: true
+      crazyeggs.destruction.use: true
   crazyeggs.getegg:
     description: Allows you to perform the /getegg command
     default: op
@@ -28,6 +41,20 @@ permissions:
   crazyeggs.use:
     description: Allows you to use the Crazy Egg
     default: true
+
+
+  crazyeggs.destruction.getegg:
+      description: Allows you to perform the /getdestructionegg command
+      default: op
+  crazyeggs.destruction.craft:
+      description: Allows you to craft the Destruction Egg
+      default: true
+  crazyeggs.destruction.use:
+      description: Allows you to use the Destruction Egg
+      default: true
+  crazyeggs.bypass.cooldown:
+    description: Allows you to bypass the Destruction's Egg cooldown
+    default: op
 
 
 

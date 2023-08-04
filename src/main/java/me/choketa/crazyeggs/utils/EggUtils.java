@@ -17,15 +17,31 @@ public class EggUtils {
         if (!item.hasItemMeta()) return false;
         return item.getItemMeta().getPersistentDataContainer().has(new NamespacedKey(plugin, "crazyegg"), PersistentDataType.INTEGER);
     }
-    public static void setLore(JavaPlugin plugin, ItemStack item, ItemMeta meta) {
+    public static void setCrazyLore(JavaPlugin plugin, ItemStack item, ItemMeta meta) {
         List<String> lore = plugin.getConfig().getStringList("crazy-egg-lore");
         lore.replaceAll(ColorUtils::format);
         meta.setLore(lore);
         item.setItemMeta(meta);
     }
-    public static void setName(JavaPlugin plugin, ItemStack item, ItemMeta meta) {
+    public static void setCrazyName(JavaPlugin plugin, ItemStack item, ItemMeta meta) {
         String name = plugin.getConfig().getString("crazy-egg-name");
         meta.setDisplayName(format(name));
         item.setItemMeta(meta);
     }
+    public static boolean isDestructionEgg(JavaPlugin plugin, ItemStack item) {
+        if (!item.hasItemMeta()) return false;
+        return item.getItemMeta().getPersistentDataContainer().has(new NamespacedKey(plugin, "destructionegg"), PersistentDataType.INTEGER);
+    }
+    public static void setDestructionLore(JavaPlugin plugin, ItemStack item, ItemMeta meta) {
+        List<String> lore = plugin.getConfig().getStringList("destruction-egg-lore");
+        lore.replaceAll(ColorUtils::format);
+        meta.setLore(lore);
+        item.setItemMeta(meta);
+    }
+    public static void setDestructionName(JavaPlugin plugin, ItemStack item, ItemMeta meta) {
+        String name = plugin.getConfig().getString("destruction-egg-name");
+        meta.setDisplayName(format(name));
+        item.setItemMeta(meta);
+    }
 }
+

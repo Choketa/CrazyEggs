@@ -1,7 +1,7 @@
 package me.choketa.crazyeggs.listeners;
 
 import me.choketa.crazyeggs.CrazyEggs;
-import me.choketa.crazyeggs.EggRecipe;
+import me.choketa.crazyeggs.recipes.CrazyEggRecipe;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -20,15 +20,15 @@ import java.util.UUID;
 import static me.choketa.crazyeggs.utils.EggUtils.*;
 
 
-public class EggEvents implements Listener {
+public class CrazyEggEvents implements Listener {
     CrazyEggs plugin;
-    EggRecipe egg;
+    CrazyEggRecipe egg;
 
     HashSet<UUID> projectile = new HashSet<>();
 
-    public EggEvents(CrazyEggs plugin) {
+    public CrazyEggEvents(CrazyEggs plugin) {
         this.plugin = plugin;
-        this.egg = new EggRecipe(plugin);
+        this.egg = new CrazyEggRecipe(plugin);
     }
 
 
@@ -110,7 +110,6 @@ public class EggEvents implements Listener {
         Player player = (Player) event.getEntity().getShooter();
         ItemStack item = player.getInventory().getItemInMainHand();
 
-
         if (!(event.getEntity() instanceof Egg)) {
             return;
         }
@@ -129,7 +128,6 @@ public class EggEvents implements Listener {
         final ItemStack item = event.getEgg().getItem();
         if (!isCrazyEgg(plugin, item)) return;
         event.setHatching(false);
-
     }
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {

@@ -1,5 +1,6 @@
-package me.choketa.crazyeggs;
+package me.choketa.crazyeggs.recipes;
 
+import me.choketa.crazyeggs.CrazyEggs;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -16,10 +17,10 @@ import java.util.List;
 import static me.choketa.crazyeggs.utils.EggUtils.*;
 
 
-public class EggRecipe {
+public class CrazyEggRecipe {
     CrazyEggs plugin;
 
-    public EggRecipe(CrazyEggs plugin) {
+    public CrazyEggRecipe(CrazyEggs plugin) {
         this.plugin = plugin;
     }
 
@@ -29,8 +30,8 @@ public class EggRecipe {
         ItemMeta meta = item.getItemMeta();
 
 
-        setName(plugin, item, meta);
-        setLore(plugin, item, meta);
+        setCrazyName(plugin, item, meta);
+        setCrazyLore(plugin, item, meta);
         meta.addEnchant(Enchantment.DURABILITY, 1, false);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         PersistentDataContainer pdc = meta.getPersistentDataContainer();
