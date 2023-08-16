@@ -14,8 +14,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-import java.util.HashSet;
-import java.util.UUID;
 
 import static me.choketa.crazyeggs.utils.EggUtils.*;
 
@@ -23,8 +21,6 @@ import static me.choketa.crazyeggs.utils.EggUtils.*;
 public class CrazyEggEvents implements Listener {
     CrazyEggs plugin;
     CrazyEggRecipe egg;
-
-    HashSet<UUID> projectile = new HashSet<>();
 
     public CrazyEggEvents(CrazyEggs plugin) {
         this.plugin = plugin;
@@ -45,11 +41,8 @@ public class CrazyEggEvents implements Listener {
         }
         Player player = (Player) event.getEntity().getShooter();
 
-        if (!projectile.contains(player.getUniqueId())) {
-            return;
-        }
+        if (!isCrazyEgg(plugin, event.getEntity())) return;
         if (event.getHitEntity() == null) {
-            projectile.remove(player.getUniqueId());
             return;
         }
         if (!(event.getHitEntity() instanceof LivingEntity)) {
@@ -90,7 +83,6 @@ public class CrazyEggEvents implements Listener {
             Vector direction = event.getEntity().getVelocity().multiply(plugin.getConfig().getDouble("velocity-multiplier"));
             entity.setVelocity(direction.setY(plugin.getConfig().getDouble("velocity-set-y")));
             entity.setVelocity(direction);
-            projectile.remove(player.getUniqueId());
 
 
 
@@ -117,10 +109,8 @@ public class CrazyEggEvents implements Listener {
         if (!player.hasPermission("crazyeggs.use")) {
             event.setCancelled(true);
             player.sendMessage(ChatColor.RED+"[CrazyEggs] You are not allowed to use the egg!");
-            return;
         }
 
-        projectile.add(player.getUniqueId());
     }
     //Disables the egg hatching
     @EventHandler

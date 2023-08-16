@@ -15,7 +15,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.UUID;
 
 import static me.choketa.crazyeggs.utils.EggUtils.isDestructionEgg;
@@ -26,7 +25,6 @@ public class DestructionEggEvents implements Listener {
     DestructionEggRecipe egg;
 
 
-    HashSet<UUID> projectile = new HashSet<>();
     HashMap<UUID, Long> cooldown = new HashMap<>();
     long timeElapsed;
 
@@ -45,12 +43,10 @@ public class DestructionEggEvents implements Listener {
         }
         Player player = (Player) event.getEntity().getShooter();
 
-        if (!projectile.contains(player.getUniqueId())) {
-            return;
-        }
+        if (!isDestructionEgg(plugin, event.getEntity())) return;
+
         float power = (float) plugin.getConfig().getDouble("power");
         Bukkit.getWorld(player.getWorld().getUID()).createExplosion(event.getEntity().getLocation(), power, false);
-        projectile.remove(player.getUniqueId());
         }
     //Adds the player to the Set
     @EventHandler
@@ -69,17 +65,14 @@ public class DestructionEggEvents implements Listener {
             return;
         }
         if (player.hasPermission("crazyeggs.bypass.cooldown") || player.isOp()) {
-            projectile.add(player.getUniqueId());
             return;
         }
         if (!cooldown.containsKey(player.getUniqueId())) {
-            projectile.add(player.getUniqueId());
             cooldown.put(player.getUniqueId(), System.currentTimeMillis());
         } else {
             timeElapsed = System.currentTimeMillis() - cooldown.get(player.getUniqueId());
             int cooldowns = plugin.getConfig().getInt("cooldown");
             if (timeElapsed >= (cooldowns * 1000L)) {
-                projectile.add(player.getUniqueId());
                 cooldown.put(player.getUniqueId(), System.currentTimeMillis());
             }
             else {
@@ -103,7 +96,7 @@ public class DestructionEggEvents implements Listener {
         if (player.hasDiscoveredRecipe(recipe)) return;
         player.discoverRecipe(recipe);
     }
-    //Disables crafting with the eggs or if player has no permission
+    //Handles the Crafting. Only with the actual, unedited Crazy Eggs.
     @EventHandler
     public void onCraft(PrepareItemCraftEvent event) {
         if (!plugin.getConfig().getBoolean("can-craft-items")) return;
@@ -112,19 +105,6 @@ public class DestructionEggEvents implements Listener {
         if (event.getInventory().getResult() == null) return;
         if (!player.hasPermission("crazyeggs.destruction.craft") && event.getInventory().getResult().isSimilar(egg.eggItem())) {
             event.getInventory().setResult(new ItemStack(Material.AIR));
-            return;
-        }
-        if (!event.getInventory().contains(egg.eggItem())) return;
-
-        //It starts from index 1 to exclude the result slot
-        for (int i = 1; i <= event.getInventory().getMatrix().length; i++) {
-            ItemStack item = event.getInventory().getItem(i);
-
-
-            if (item == null) continue;
-            if (!isDestructionEgg(plugin,item)) continue;
-            event.getInventory().setResult(new ItemStack(Material.AIR));
-
         }
     }
 }
