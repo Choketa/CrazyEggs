@@ -9,7 +9,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import static me.choketa.crazyeggs.utils.ColorUtils.format;
 
 public class OnOpJoinEvent implements Listener {
-    CrazyEggs plugin;
+    private final CrazyEggs plugin;
     public OnOpJoinEvent(CrazyEggs plugin) {
         this.plugin=plugin;
     }

@@ -19,8 +19,8 @@ import static me.choketa.crazyeggs.utils.EggUtils.*;
 
 
 public class CrazyEggEvents implements Listener {
-    CrazyEggs plugin;
-    CrazyEggRecipe egg;
+    private final CrazyEggs plugin;
+    private final CrazyEggRecipe egg;
 
     public CrazyEggEvents(CrazyEggs plugin) {
         this.plugin = plugin;
