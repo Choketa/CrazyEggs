@@ -1,33 +1,40 @@
 package me.choketa.crazyeggs.utils;
 
+import com.google.gson.*;
+import com.google.gson.stream.JsonReader;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Scanner;
 import java.util.function.Consumer;
+import java.util.logging.Level;
 
-// From: https://www.spigotmc.org/wiki/creating-an-update-checker-that-checks-for-updates
+import static me.choketa.crazyeggs.CrazyEggs.getPlugin;
+
 public class UpdateChecker {
 
-    private final JavaPlugin plugin;
-    private final int resourceId;
 
-    public UpdateChecker(JavaPlugin plugin, int resourceId) {
-        this.plugin = plugin;
-        this.resourceId = resourceId;
+    public UpdateChecker() {
     }
 
     public void getVersion(final Consumer<String> consumer) {
-        Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> {
-            try (InputStream is = new URL("https://api.spigotmc.org/legacy/update.php?resource=" + this.resourceId).openStream(); Scanner scann = new Scanner(is)) {
-                if (scann.hasNext()) {
-                    consumer.accept(scann.next());
-                }
+        Bukkit.getScheduler().runTaskAsynchronously(getPlugin(), () -> {
+            try {
+                URL url = new URL("https://api.modrinth.com/v2/project/NfCmfKoW/version");
+                InputStream in = url.openStream();
+
+                String version = new Scanner(in).nextLine();
+                consumer.accept(version);
+                in.close();
             } catch (IOException e) {
-                plugin.getLogger().info("Unable to check for updates: " + e.getMessage());
+                getPlugin().getLogger().warning("Unable to fetch version");
             }
         });
     }

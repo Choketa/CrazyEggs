@@ -1,6 +1,5 @@
 package me.choketa.crazyeggs.commands;
 
-import me.choketa.crazyeggs.CrazyEggs;
 import me.choketa.crazyeggs.recipes.CrazyEggRecipe;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -11,16 +10,15 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import static me.choketa.crazyeggs.CrazyEggs.getPlugin;
 import static me.choketa.crazyeggs.utils.ColorUtils.format;
 
 public class GiveEggCommand implements CommandExecutor {
 
-    CrazyEggRecipe egg;
-    CrazyEggs plugin;
+    private final CrazyEggRecipe egg;
 
-    public GiveEggCommand(CrazyEggs plugin) {
-        this.plugin = plugin;
-        egg = new CrazyEggRecipe(this.plugin);
+    public GiveEggCommand() {
+        egg = getPlugin().getCrazyEggsRecipe();
     }
 
     @Override
@@ -59,4 +57,3 @@ public class GiveEggCommand implements CommandExecutor {
         return true;
     }
 }
-

@@ -50,66 +50,64 @@ public class CrazyEggEvents implements Listener {
         String name = event.getHitEntity().getName().toUpperCase();
 
         if (event.getHitEntity() instanceof Enderman && plugin.getConfig().getBoolean("enable-enderman-effect")) {
-            Bukkit.getWorld(player.getWorld().getName()).playEffect(event.getHitEntity().getLocation(),Effect.DRAGON_BREATH, 50);
+            Bukkit.getWorld(player.getWorld().getName()).playEffect(event.getHitEntity().getLocation(), Effect.DRAGON_BREATH, 50);
         }
 
         Sound impactSound;
         Particle particle;
 
         if (plugin.getConfig().getString("sound-when-hit") == null ||
-            plugin.getConfig().getString("sound-when-hit").isEmpty()){
+                plugin.getConfig().getString("sound-when-hit").isEmpty()) {
             impactSound = null;
-        }
-
-        else {
+        } else {
             impactSound = Sound.valueOf(plugin.getConfig().getString("sound-when-hit"));
         }
         if (plugin.getConfig().getString("default-particle").isEmpty() ||
-         plugin.getConfig().getString("default-particle") == null) {
+                plugin.getConfig().getString("default-particle") == null) {
             particle = null;
-        }
-        else {
+        } else {
             particle = Particle.valueOf(plugin.getConfig().getString("default-particle"));
         }
 
         LivingEntity entity = (LivingEntity) event.getHitEntity();
 
-            entity.damage(plugin.getConfig().getInt("damage"));
-            Bukkit.getWorld(entity.getWorld().getName()).playSound(event.getHitEntity(), impactSound, 0.5f, 1f);
-            Bukkit.getWorld(entity.getWorld().getName()).spawnParticle(particle,entity.getLocation(),plugin.getConfig().getInt("particle-count"));
+        entity.damage(plugin.getConfig().getInt("damage"));
+        Bukkit.getWorld(entity.getWorld().getName()).playSound(event.getHitEntity(), impactSound, 0.5f, 1f);
+        Bukkit.getWorld(entity.getWorld().getName()).spawnParticle(particle, entity.getLocation(), plugin.getConfig().getInt("particle-count"));
 
-            Vector direction = event.getEntity().getVelocity().multiply(plugin.getConfig().getDouble("velocity-multiplier"));
-            entity.setVelocity(direction.setY(plugin.getConfig().getDouble("velocity-set-y")));
-            entity.setVelocity(direction);
-
+        Vector direction = event.getEntity().getVelocity().multiply(plugin.getConfig().getDouble("velocity-multiplier"));
+        entity.setVelocity(direction.setY(plugin.getConfig().getDouble("velocity-set-y")));
+        entity.setVelocity(direction);
 
 
         if (event.getHitEntity().isDead() && random == max && !(event.getHitEntity() instanceof Player)
-            && plugin.getConfig().getBoolean("enable-spawn-eggs-drop")) {
-                Material eggMaterial = Material.matchMaterial(name + "_SPAWN_EGG");
-                if (eggMaterial == null) return;
-                ItemStack eggItem = new ItemStack(eggMaterial);
+                && plugin.getConfig().getBoolean("enable-spawn-eggs-drop")) {
+            Material eggMaterial = Material.matchMaterial(name + "_SPAWN_EGG");
+            if (eggMaterial == null) return;
+            ItemStack eggItem = new ItemStack(eggMaterial);
 
-                Bukkit.getWorld(player.getWorld().getName()).dropItem(entity.getLocation(), eggItem);
-            }
+            Bukkit.getWorld(player.getWorld().getName()).dropItem(entity.getLocation(), eggItem);
+        }
     }
+
     //Adds the player to the Set
     @EventHandler
     public void onLaunch(ProjectileLaunchEvent event) {
-        if(!(event.getEntity().getShooter() instanceof Player)) return;
+        if (!(event.getEntity().getShooter() instanceof Player)) return;
         Player player = (Player) event.getEntity().getShooter();
         ItemStack item = player.getInventory().getItemInMainHand();
 
         if (!(event.getEntity() instanceof Egg)) {
             return;
         }
-        if (!isCrazyEgg(plugin,item)) return;
+        if (!isCrazyEgg(plugin, item)) return;
         if (!player.hasPermission("crazyeggs.use")) {
             event.setCancelled(true);
-            player.sendMessage(ChatColor.RED+"[CrazyEggs] You are not allowed to use the egg!");
+            player.sendMessage(ChatColor.RED + "[CrazyEggs] You are not allowed to use the egg!");
         }
 
     }
+
     //Disables the egg hatching
     @EventHandler
     public void onHatch(PlayerEggThrowEvent event) {
@@ -117,14 +115,17 @@ public class CrazyEggEvents implements Listener {
         if (!isCrazyEgg(plugin, item)) return;
         event.setHatching(false);
     }
+
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        NamespacedKey recipe = new NamespacedKey(plugin,"egg");
-        if (!player.hasPermission("crazyeggs.craft") && player.hasDiscoveredRecipe(recipe)) player.undiscoverRecipe(recipe);
+        NamespacedKey recipe = new NamespacedKey(plugin, "egg");
+        if (!player.hasPermission("crazyeggs.craft") && player.hasDiscoveredRecipe(recipe))
+            player.undiscoverRecipe(recipe);
         if (player.hasDiscoveredRecipe(recipe)) return;
         player.discoverRecipe(recipe);
     }
+
     //Disables crafting with the eggs or if player has no permission
     @EventHandler
     public void onCraft(PrepareItemCraftEvent event) {
@@ -143,9 +144,9 @@ public class CrazyEggEvents implements Listener {
             ItemStack item = event.getInventory().getItem(i);
 
             if (item == null) continue;
-            if (!isCrazyEgg(plugin,item)) continue;
+            if (!isCrazyEgg(plugin, item)) continue;
             event.getInventory().setResult(new ItemStack(Material.AIR));
 
-            }
         }
     }
+}
