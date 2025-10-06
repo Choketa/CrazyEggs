@@ -21,19 +21,16 @@ import static me.choketa.crazyeggs.utils.EggUtils.isDestructionEgg;
 
 public class DestructionEggEvents implements Listener {
 
-    CrazyEggs plugin;
-    DestructionEggRecipe egg;
+    private final CrazyEggs plugin;
+    private final DestructionEggRecipe egg;
 
 
-    HashMap<UUID, Long> cooldown = new HashMap<>();
-    long timeElapsed;
+    private final HashMap<UUID, Long> cooldown = new HashMap<>();
 
-    public DestructionEggEvents(CrazyEggs plugin) {
-        this.plugin = plugin;
-        this.egg = new DestructionEggRecipe(plugin);
+    public DestructionEggEvents() {
+        this.plugin = CrazyEggs.getPlugin();
+        this.egg = plugin.getDestructionEggRecipe();
     }
-
-
 
     //Makes the impact happen
     @EventHandler
@@ -55,26 +52,26 @@ public class DestructionEggEvents implements Listener {
         Player player = (Player) event.getEntity().getShooter();
         ItemStack item = player.getInventory().getItemInMainHand();
 
-        if (!(event.getEntity() instanceof Egg)) {
+        if (!(event.getEntity() instanceof Egg))
             return;
-        }
+
         if (!isDestructionEgg(plugin,item)) return;
         if (!player.hasPermission("crazyeggs.destruction.use")) {
             event.setCancelled(true);
             player.sendMessage(ChatColor.RED+"[CrazyEggs] You are not allowed to use the egg!");
             return;
         }
-        if (player.hasPermission("crazyeggs.bypass.cooldown") || player.isOp()) {
+        if (player.hasPermission("crazyeggs.bypass.cooldown") || player.isOp())
             return;
-        }
+
         if (!cooldown.containsKey(player.getUniqueId())) {
             cooldown.put(player.getUniqueId(), System.currentTimeMillis());
         } else {
-            timeElapsed = System.currentTimeMillis() - cooldown.get(player.getUniqueId());
+           long timeElapsed = System.currentTimeMillis() - cooldown.get(player.getUniqueId());
             int cooldowns = plugin.getConfig().getInt("cooldown");
-            if (timeElapsed >= (cooldowns * 1000L)) {
+            if (timeElapsed >= (cooldowns * 1000L))
                 cooldown.put(player.getUniqueId(), System.currentTimeMillis());
-            }
+
             else {
                 player.sendMessage(ChatColor.DARK_RED+"You are in a cooldown. "+(((cooldowns*1000L) - timeElapsed)/1000)+" more seconds");
                 event.setCancelled(true);

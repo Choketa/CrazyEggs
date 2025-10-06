@@ -13,32 +13,36 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
+import static me.choketa.crazyeggs.CrazyEggs.getPlugin;
 import static me.choketa.crazyeggs.utils.EggUtils.*;
 
 public class DestructionEggRecipe {
-    CrazyEggs plugin;
-    CrazyEggRecipe crazyEgg;
+    private final CrazyEggs plugin;
+    private final CrazyEggRecipe crazyEgg;
+    private static ItemStack destructionEgg;
 
-    public DestructionEggRecipe(CrazyEggs plugin) {
-        this.plugin = plugin;
-        crazyEgg = new CrazyEggRecipe(plugin);
+    public DestructionEggRecipe() {
+        this.plugin = getPlugin();
+        crazyEgg = plugin.getCrazyEggsRecipe();
     }
+    static {
+        destructionEgg = new ItemStack(Material.EGG, getPlugin().getConfig().getInt("upon-destruction-craft-amount"));
+        ItemMeta meta = destructionEgg.getItemMeta();
 
-
-    public ItemStack eggItem() {
-        ItemStack item = new ItemStack(Material.EGG, plugin.getConfig().getInt("upon-destruction-craft-amount"));
-        ItemMeta meta = item.getItemMeta();
-
-
-        setDestructionName(plugin, item, meta);
-        setDestructionLore(plugin, item, meta);
+        setDestructionName(getPlugin(), destructionEgg, meta);
+        setDestructionLore(getPlugin(), destructionEgg, meta);
         meta.addEnchant(Enchantment.DURABILITY, 1, false);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         PersistentDataContainer pdc = meta.getPersistentDataContainer();
-        pdc.set(new NamespacedKey(plugin,"destructionegg"), PersistentDataType.INTEGER,69);
-        item.setItemMeta(meta);
+        pdc.set(new NamespacedKey(getPlugin(),"destructionegg"), PersistentDataType.INTEGER,69);
+        int customModelData = getPlugin().getConfig().getInt("destruction-custom-model-data");
+        if (customModelData != -1)
+            meta.setCustomModelData(customModelData);
+        destructionEgg.setItemMeta(meta);
+    }
 
-        return item;
+    public ItemStack eggItem() {
+        return destructionEgg;
     }
 
     public void eggCraft() {

@@ -11,26 +11,28 @@ import me.choketa.crazyeggs.utils.UpdateChecker;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class CrazyEggs extends JavaPlugin {
-
+    private CrazyEggRecipe egg;
+    private DestructionEggRecipe degg;
+    private static CrazyEggs plugin;
     @Override
     public void onEnable() {
         // Plugin startup logic
         getConfig().options().copyDefaults();
         saveDefaultConfig();
 
-        CrazyEggRecipe egg = new CrazyEggRecipe(this);
+        egg = new CrazyEggRecipe();
         egg.eggCraft();
-        DestructionEggRecipe degg = new DestructionEggRecipe(this);
+        degg = new DestructionEggRecipe();
         degg.eggCraft();
 
-        getServer().getPluginManager().registerEvents(new CrazyEggEvents(this), this);
-        getServer().getPluginManager().registerEvents(new DestructionEggEvents(this), this);
-        getServer().getPluginManager().registerEvents(new OnOpJoinEvent(this), this);
+        getServer().getPluginManager().registerEvents(new CrazyEggEvents(), this);
+        getServer().getPluginManager().registerEvents(new DestructionEggEvents(), this);
+        getServer().getPluginManager().registerEvents(new OnOpJoinEvent(), this);
 
-        getCommand("getdestructionegg").setExecutor(new GiveDestructionEggCommand(this));
-        getCommand("getegg").setExecutor(new GiveEggCommand(this));
+        getCommand("getdestructionegg").setExecutor(new GiveDestructionEggCommand());
+        getCommand("getegg").setExecutor(new GiveEggCommand());
 
-        new UpdateChecker(this, 111676).getVersion(version -> {
+        new UpdateChecker(111676).getVersion(version -> {
             if (this.getDescription().getVersion().equals(version)) {
                 getLogger().info("There is not a new update available.");
             } else {
@@ -38,7 +40,17 @@ public final class CrazyEggs extends JavaPlugin {
                 getLogger().warning("Go to https://www.spigotmc.org/resources/1-20-crazyeggs.111676/ in order to update!");
             }
         });
+        plugin = this;
+    }
+    public static CrazyEggs getPlugin() {
+        return plugin;
+    }
+    public CrazyEggRecipe getCrazyEggsRecipe() {
+        return egg;
+    }
 
+    public DestructionEggRecipe getDestructionEggRecipe() {
+        return degg;
     }
 }
 
