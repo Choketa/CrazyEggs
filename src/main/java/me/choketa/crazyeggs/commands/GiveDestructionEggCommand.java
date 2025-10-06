@@ -14,8 +14,8 @@ import org.bukkit.inventory.ItemStack;
 import static me.choketa.crazyeggs.utils.ColorUtils.format;
 
 public class GiveDestructionEggCommand implements CommandExecutor {
-    private final DestructionEggRecipe egg;
-    private final CrazyEggs plugin;
+    DestructionEggRecipe egg;
+    CrazyEggs plugin;
 
     public GiveDestructionEggCommand(CrazyEggs plugin) {
         this.plugin = plugin;

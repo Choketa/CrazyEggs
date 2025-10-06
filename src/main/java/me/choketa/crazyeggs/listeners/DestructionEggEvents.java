@@ -21,16 +21,19 @@ import static me.choketa.crazyeggs.utils.EggUtils.isDestructionEgg;
 
 public class DestructionEggEvents implements Listener {
 
-    private final CrazyEggs plugin;
-    private final DestructionEggRecipe egg;
+    CrazyEggs plugin;
+    DestructionEggRecipe egg;
 
 
-    private final HashMap<UUID, Long> cooldown = new HashMap<>();
+    HashMap<UUID, Long> cooldown = new HashMap<>();
+    long timeElapsed;
 
     public DestructionEggEvents(CrazyEggs plugin) {
         this.plugin = plugin;
         this.egg = new DestructionEggRecipe(plugin);
     }
+
+
 
     //Makes the impact happen
     @EventHandler
@@ -67,7 +70,7 @@ public class DestructionEggEvents implements Listener {
         if (!cooldown.containsKey(player.getUniqueId())) {
             cooldown.put(player.getUniqueId(), System.currentTimeMillis());
         } else {
-            long timeElapsed = System.currentTimeMillis() - cooldown.get(player.getUniqueId());
+            timeElapsed = System.currentTimeMillis() - cooldown.get(player.getUniqueId());
             int cooldowns = plugin.getConfig().getInt("cooldown");
             if (timeElapsed >= (cooldowns * 1000L)) {
                 cooldown.put(player.getUniqueId(), System.currentTimeMillis());

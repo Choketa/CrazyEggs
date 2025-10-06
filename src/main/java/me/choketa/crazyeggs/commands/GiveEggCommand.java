@@ -15,8 +15,8 @@ import static me.choketa.crazyeggs.utils.ColorUtils.format;
 
 public class GiveEggCommand implements CommandExecutor {
 
-    private final CrazyEggRecipe egg;
-    private final CrazyEggs plugin;
+    CrazyEggRecipe egg;
+    CrazyEggs plugin;
 
     public GiveEggCommand(CrazyEggs plugin) {
         this.plugin = plugin;

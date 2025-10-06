@@ -13,27 +13,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-import static me.choketa.crazyeggs.CrazyEggs.getPlugin;
 import static me.choketa.crazyeggs.utils.EggUtils.*;
 
 public class DestructionEggRecipe {
-    private final CrazyEggs plugin;
-    private final CrazyEggRecipe crazyEgg;
-
-    public static final ItemStack DESTRUCTION_EGG_ITEM;
-    static {
-        DESTRUCTION_EGG_ITEM = new ItemStack(Material.EGG, getPlugin().getConfig().getInt("upon-destruction-craft-amount"));
-        ItemMeta meta = DESTRUCTION_EGG_ITEM.getItemMeta();
-
-
-        setDestructionName(getPlugin(), DESTRUCTION_EGG_ITEM, meta);
-        setDestructionLore(getPlugin(), DESTRUCTION_EGG_ITEM, meta);
-        meta.addEnchant(Enchantment.UNBREAKING, 1, false);
-        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        PersistentDataContainer pdc = meta.getPersistentDataContainer();
-        pdc.set(new NamespacedKey(getPlugin(),"destructionegg"), PersistentDataType.INTEGER,69);
-        DESTRUCTION_EGG_ITEM.setItemMeta(meta);
-    }
+    CrazyEggs plugin;
+    CrazyEggRecipe crazyEgg;
 
     public DestructionEggRecipe(CrazyEggs plugin) {
         this.plugin = plugin;
@@ -48,7 +32,7 @@ public class DestructionEggRecipe {
 
         setDestructionName(plugin, item, meta);
         setDestructionLore(plugin, item, meta);
-        meta.addEnchant(Enchantment.UNBREAKING, 1, false);
+        meta.addEnchant(Enchantment.DURABILITY, 1, false);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         PersistentDataContainer pdc = meta.getPersistentDataContainer();
         pdc.set(new NamespacedKey(plugin,"destructionegg"), PersistentDataType.INTEGER,69);

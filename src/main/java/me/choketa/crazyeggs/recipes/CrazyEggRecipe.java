@@ -21,55 +21,41 @@ import static me.choketa.crazyeggs.utils.EggUtils.*;
 public class CrazyEggRecipe {
     private final CrazyEggs plugin;
 
-    public CrazyEggRecipe(CrazyEggs plugin) {
-        this.plugin = plugin;
+    public CrazyEggRecipe() {
+        this.plugin = getPlugin();
     }
-
-
-    public static final ItemStack CRAZY_EGG_ITEM;
+    private static final ItemStack CRAZY_EGG;
     static {
-        CRAZY_EGG_ITEM = new ItemStack(Material.EGG, getPlugin().getConfig().getInt("upon-craft-amount"));
-        ItemMeta meta = CRAZY_EGG_ITEM.getItemMeta();
+        CRAZY_EGG = new ItemStack(Material.EGG, getPlugin().getConfig().getInt("upon-craft-amount"));
+        ItemMeta meta = CRAZY_EGG.getItemMeta();
 
-
-        setCrazyName(getPlugin(), CRAZY_EGG_ITEM, meta);
-        setCrazyLore(getPlugin(), CRAZY_EGG_ITEM, meta);
-        meta.addEnchant(Enchantment.UNBREAKING, 1, false);
+        setCrazyName(getPlugin(), CRAZY_EGG, meta);
+        setCrazyLore(getPlugin(), CRAZY_EGG, meta);
+        meta.addEnchant(Enchantment.DURABILITY, 1, false);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         PersistentDataContainer pdc = meta.getPersistentDataContainer();
         pdc.set(new NamespacedKey(getPlugin(),"crazyegg"), PersistentDataType.INTEGER,69);
-        CRAZY_EGG_ITEM.setItemMeta(meta);
-
+        int customModelData = getPlugin().getConfig().getInt("crazy-custom-model-data");
+        if (customModelData != -1)
+            meta.setCustomModelData(customModelData);
+        CRAZY_EGG.setItemMeta(meta);
     }
 
     public ItemStack eggItem() {
-        ItemStack item = new ItemStack(Material.EGG, plugin.getConfig().getInt("upon-craft-amount"));
-        ItemMeta meta = item.getItemMeta();
-
-
-        setCrazyName(plugin, item, meta);
-        setCrazyLore(plugin, item, meta);
-        meta.addEnchant(Enchantment.UNBREAKING, 1, false);
-        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        PersistentDataContainer pdc = meta.getPersistentDataContainer();
-        pdc.set(new NamespacedKey(plugin,"crazyegg"), PersistentDataType.INTEGER,69);
-        item.setItemMeta(meta);
-
-        return item;
+      return CRAZY_EGG;
     }
 
     public void eggCraft() {
-        // Not ideal customization, but for now that's good enough.
+        // Not ideal customization, but for now this approach is good enough.
         if (!plugin.getConfig().getBoolean("is-craftable")) return;
-        eggItem();
         ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(plugin,"egg"), eggItem());
         List<String> crazyEggRecipe = plugin.getConfig().getStringList("crazy-egg-recipe");
         List<String> materials = plugin.getConfig().getStringList("materials");
 
         recipe.shape(crazyEggRecipe.get(0), crazyEggRecipe.get(1), crazyEggRecipe.get(2));
-        for (String material : materials) {
+        for (String material : materials)
             recipe.setIngredient(material.charAt(0), Material.matchMaterial(material));
-        }
+
         Bukkit.addRecipe(recipe);
     }
 }

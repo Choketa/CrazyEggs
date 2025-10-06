@@ -22,12 +22,10 @@ public class CrazyEggEvents implements Listener {
     private final CrazyEggs plugin;
     private final CrazyEggRecipe egg;
 
-    public CrazyEggEvents(CrazyEggs plugin) {
-        this.plugin = plugin;
-        this.egg = new CrazyEggRecipe(plugin);
+    public CrazyEggEvents() {
+        this.plugin = CrazyEggs.getPlugin();
+        this.egg = plugin.getCrazyEggsRecipe();
     }
-
-
 
     //Makes the impact happen
     @EventHandler
