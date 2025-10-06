@@ -10,13 +10,15 @@ import me.choketa.crazyeggs.recipes.DestructionEggRecipe;
 import me.choketa.crazyeggs.utils.UpdateChecker;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import static me.choketa.crazyeggs.CrazyEggs.getPlugin;
+
 public final class CrazyEggs extends JavaPlugin {
     private CrazyEggRecipe egg;
     private DestructionEggRecipe degg;
     private static CrazyEggs plugin;
     @Override
     public void onEnable() {
-        // Plugin startup logic
+        plugin = this;
         getConfig().options().copyDefaults();
         saveDefaultConfig();
 
@@ -32,15 +34,15 @@ public final class CrazyEggs extends JavaPlugin {
         getCommand("getdestructionegg").setExecutor(new GiveDestructionEggCommand());
         getCommand("getegg").setExecutor(new GiveEggCommand());
 
-        new UpdateChecker(111676).getVersion(version -> {
-            if (this.getDescription().getVersion().equals(version)) {
+        new UpdateChecker().getVersion(version -> {
+            String curr = "\""+getPlugin().getDescription().getVersion()+"\"";
+            if (version.replaceFirst("\"[0-9]\\.[0-9]\\.[0-9]\"", curr).equals(version)) {
                 getLogger().info("There is not a new update available.");
             } else {
                 getLogger().warning("There is a new update available!");
-                getLogger().warning("Go to https://www.spigotmc.org/resources/1-20-crazyeggs.111676/ in order to update!");
+                getLogger().warning("Go to https://modrinth.com/plugin/crazy-eggs in order to update!");
             }
         });
-        plugin = this;
     }
     public static CrazyEggs getPlugin() {
         return plugin;
