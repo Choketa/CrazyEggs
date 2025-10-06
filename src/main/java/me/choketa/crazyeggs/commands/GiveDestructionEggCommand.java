@@ -10,13 +10,14 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import static me.choketa.crazyeggs.CrazyEggs.getPlugin;
 import static me.choketa.crazyeggs.utils.ColorUtils.format;
 
 public class GiveDestructionEggCommand implements CommandExecutor {
     private final DestructionEggRecipe egg;
 
     public GiveDestructionEggCommand() {
-        egg = new DestructionEggRecipe();
+        egg = getPlugin().getDestructionEggRecipe();
     }
 
     @Override

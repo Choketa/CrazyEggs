@@ -10,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import static me.choketa.crazyeggs.CrazyEggs.getPlugin;
 import static me.choketa.crazyeggs.utils.ColorUtils.format;
 
 public class GiveEggCommand implements CommandExecutor {
@@ -17,7 +18,7 @@ public class GiveEggCommand implements CommandExecutor {
     private final CrazyEggRecipe egg;
 
     public GiveEggCommand() {
-        egg = new CrazyEggRecipe();
+        egg = getPlugin().getCrazyEggsRecipe();
     }
 
     @Override
