@@ -36,7 +36,7 @@ public class CrazyEggEvents implements Listener {
             return;
         }
 
-        if (!isCrazyEgg(plugin, event.getEntity())) return;
+        if (!isCrazyEgg(event.getEntity())) return;
         if (event.getHitEntity() == null) {
             return;
         }
@@ -97,7 +97,7 @@ public class CrazyEggEvents implements Listener {
         if (!(event.getEntity() instanceof Egg)) {
             return;
         }
-        if (!isCrazyEgg(plugin, item)) return;
+        if (!isCrazyEgg(item)) return;
         if (!player.hasPermission("crazyeggs.use")) {
             event.setCancelled(true);
             player.sendMessage(ChatColor.RED + "[CrazyEggs] You are not allowed to use the egg!");
@@ -109,7 +109,7 @@ public class CrazyEggEvents implements Listener {
     @EventHandler
     public void onHatch(PlayerEggThrowEvent event) {
         final ItemStack item = event.getEgg().getItem();
-        if (!isCrazyEgg(plugin, item)) return;
+        if (!isCrazyEgg(item)) return;
         event.setHatching(false);
     }
 
@@ -141,7 +141,7 @@ public class CrazyEggEvents implements Listener {
             ItemStack item = event.getInventory().getItem(i);
 
             if (item == null) continue;
-            if (!isCrazyEgg(plugin, item)) continue;
+            if (!isCrazyEgg(item)) continue;
             event.getInventory().setResult(new ItemStack(Material.AIR));
 
         }

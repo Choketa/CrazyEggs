@@ -29,9 +29,9 @@ public class CrazyEggRecipe {
         CRAZY_EGG = new ItemStack(Material.EGG, getPlugin().getConfig().getInt("upon-craft-amount"));
         ItemMeta meta = CRAZY_EGG.getItemMeta();
 
-        setCrazyName(getPlugin(), CRAZY_EGG, meta);
-        setCrazyLore(getPlugin(), CRAZY_EGG, meta);
-        meta.addEnchant(Enchantment.UNBREAKING, 1, false);
+        setCrazyName(CRAZY_EGG, meta);
+        setCrazyLore(CRAZY_EGG, meta);
+        meta.addEnchant(Enchantment.DURABILITY, 1, false);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         PersistentDataContainer pdc = meta.getPersistentDataContainer();
         pdc.set(new NamespacedKey(getPlugin(),"crazyegg"), PersistentDataType.INTEGER,69);

@@ -39,7 +39,7 @@ public class DestructionEggEvents implements Listener {
             return;
         }
 
-        if (!isDestructionEgg(plugin, event.getEntity())) return;
+        if (!isDestructionEgg(event.getEntity())) return;
 
         float power = (float) plugin.getConfig().getDouble("power");
         Bukkit.getWorld(player.getWorld().getUID()).createExplosion(event.getEntity().getLocation(), power, false);
@@ -53,7 +53,7 @@ public class DestructionEggEvents implements Listener {
         if (!(event.getEntity() instanceof Egg))
             return;
 
-        if (!isDestructionEgg(plugin,item)) return;
+        if (!isDestructionEgg(item)) return;
         if (!player.hasPermission("crazyeggs.destruction.use")) {
             event.setCancelled(true);
             player.sendMessage(ChatColor.RED+"[CrazyEggs] You are not allowed to use the egg!");
@@ -80,7 +80,7 @@ public class DestructionEggEvents implements Listener {
     @EventHandler
     public void onHatch(PlayerEggThrowEvent event) {
         final ItemStack item = event.getEgg().getItem();
-        if (!isDestructionEgg(plugin, item)) return;
+        if (!isDestructionEgg(item)) return;
         event.setHatching(false);
     }
     @EventHandler
