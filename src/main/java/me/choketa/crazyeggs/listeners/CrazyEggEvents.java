@@ -35,56 +35,50 @@ public class CrazyEggEvents implements Listener {
         if (!(event.getEntity().getShooter() instanceof Player player)) {
             return;
         }
-
+        if (!(event.getHitEntity() instanceof LivingEntity hitEntity)) {
+            return;
+        }
         if (!isCrazyEgg(event.getEntity())) return;
-        if (event.getHitEntity() == null) {
-            return;
-        }
-        if (!(event.getHitEntity() instanceof LivingEntity entity)) {
-            return;
-        }
 
-        String name = event.getHitEntity().getName().toUpperCase();
+        World world = hitEntity.getWorld();
+        Location location = hitEntity.getLocation();
 
-        if (event.getHitEntity() instanceof Enderman && plugin.getConfig().getBoolean("enable-enderman-effect")) {
-            Bukkit.getWorld(player.getWorld().getName()).playEffect(event.getHitEntity().getLocation(), Effect.DRAGON_BREATH, 50);
-        }
+        if (hitEntity instanceof Enderman && plugin.getConfig().getBoolean("enable-enderman-effect"))
+            world.playEffect(location, Effect.DRAGON_BREATH, 50);
 
         Sound impactSound;
         Particle particle;
 
-        if (plugin.getConfig().getString("sound-when-hit") == null ||
-                plugin.getConfig().getString("sound-when-hit").isEmpty()) {
-            impactSound = null;
-        } else {
-            impactSound = Sound.valueOf(plugin.getConfig().getString("sound-when-hit"));
-        }
-        if (plugin.getConfig().getString("default-particle").isEmpty() ||
-                plugin.getConfig().getString("default-particle") == null) {
-            particle = null;
-        } else {
-            particle = Particle.valueOf(plugin.getConfig().getString("default-particle"));
-        }
+        String soundString = plugin.getConfig().getString("sound-when-hit");
+        if (soundString == null || soundString.isEmpty()) impactSound = null;
+        else impactSound = Sound.valueOf(soundString);
 
-        entity.damage(plugin.getConfig().getInt("damage"));
-        Bukkit.getWorld(entity.getWorld().getName()).playSound(event.getHitEntity(), impactSound, 0.5f, 1f);
-        Bukkit.getWorld(entity.getWorld().getName()).spawnParticle(particle, entity.getLocation(), plugin.getConfig().getInt("particle-count"));
+        String particleString = plugin.getConfig().getString("default-particle");
+        if (particleString == null || particleString.isEmpty()) particle = null;
+        else particle = Particle.valueOf(particleString);
+
+        hitEntity.damage(plugin.getConfig().getInt("damage"));
+        if (impactSound != null)
+         world.playSound(hitEntity, impactSound, 0.5f, 1f);
+        if (particle != null)
+         world.spawnParticle(particle, location, plugin.getConfig().getInt("particle-count"));
 
         Vector direction = event.getEntity().getVelocity().multiply(plugin.getConfig().getDouble("velocity-multiplier"));
-        entity.setVelocity(direction.setY(plugin.getConfig().getDouble("velocity-set-y")));
-        entity.setVelocity(direction);
+        hitEntity.setVelocity(direction.setY(plugin.getConfig().getDouble("velocity-set-y")));
+        hitEntity.setVelocity(direction);
 
         //1/x chance
         int max = plugin.getConfig().getInt("spawn-egg-rarity");
         int random = new Random().nextInt(0, max);
 
-        if (event.getHitEntity().isDead() && random+1 == max && !(event.getHitEntity() instanceof Player)
+        if (hitEntity.isDead() && random+1 == max && !(hitEntity instanceof Player)
                 && plugin.getConfig().getBoolean("enable-spawn-eggs-drop")) {
+            String name = hitEntity.getName().toUpperCase();
             Material eggMaterial = Material.matchMaterial(name + "_SPAWN_EGG");
             if (eggMaterial == null) return;
             ItemStack eggItem = new ItemStack(eggMaterial);
 
-            Bukkit.getWorld(player.getWorld().getName()).dropItem(entity.getLocation(), eggItem);
+            world.dropItem(location, eggItem);
         }
     }
 

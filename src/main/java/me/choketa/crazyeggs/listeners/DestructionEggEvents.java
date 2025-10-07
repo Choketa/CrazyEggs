@@ -5,6 +5,7 @@ import me.choketa.crazyeggs.recipes.DestructionEggRecipe;
 import org.bukkit.*;
 import org.bukkit.entity.Egg;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileHitEvent;
@@ -38,11 +39,11 @@ public class DestructionEggEvents implements Listener {
         if (!(event.getEntity().getShooter() instanceof Player player)) {
             return;
         }
-
-        if (!isDestructionEgg(event.getEntity())) return;
+        Projectile proj = event.getEntity();
+        if (!isDestructionEgg(proj)) return;
 
         float power = (float) plugin.getConfig().getDouble("power");
-        Bukkit.getWorld(player.getWorld().getUID()).createExplosion(event.getEntity().getLocation(), power, false);
+        player.getWorld().createExplosion(proj.getLocation(), power, false);
     }
     //Adds the player to the Set
     @EventHandler
@@ -62,9 +63,9 @@ public class DestructionEggEvents implements Listener {
         if (player.hasPermission("crazyeggs.bypass.cooldown") || player.isOp())
             return;
 
-        if (!cooldown.containsKey(player.getUniqueId())) {
+        if (!cooldown.containsKey(player.getUniqueId()))
             cooldown.put(player.getUniqueId(), System.currentTimeMillis());
-        } else {
+        else {
             long timeElapsed = System.currentTimeMillis() - cooldown.get(player.getUniqueId());
             int cooldowns = plugin.getConfig().getInt("cooldown");
             if (timeElapsed >= (cooldowns * 1000L))
