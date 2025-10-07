@@ -8,7 +8,6 @@ import me.choketa.crazyeggs.listeners.OnOpJoinEvent;
 import me.choketa.crazyeggs.recipes.CrazyEggRecipe;
 import me.choketa.crazyeggs.recipes.DestructionEggRecipe;
 import me.choketa.crazyeggs.utils.UpdateChecker;
-import org.bukkit.command.Command;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
