@@ -56,6 +56,7 @@ velocity-set-y: 0.5
 #If you want to have no sound, simply remove the sound name
 sound-when-hit: "ENTITY_LIGHTNING_BOLT_IMPACT"
 
+
 #For resourcepacks
 crazy-custom-model-data: -1
 

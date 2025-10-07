@@ -36,9 +36,9 @@ public class DestructionEggEvents implements Listener {
     //Makes the impact happen
     @EventHandler
     public void onHit(ProjectileHitEvent event) {
-        if (!(event.getEntity().getShooter() instanceof Player player)) {
+        if (!(event.getEntity().getShooter() instanceof Player player))
             return;
-        }
+
         Projectile proj = event.getEntity();
         if (!isDestructionEgg(proj)) return;
 

@@ -43,7 +43,7 @@ public class CrazyEggEvents implements Listener {
         World world = hitEntity.getWorld();
         Location location = hitEntity.getLocation();
 
-        if (hitEntity instanceof Enderman && plugin.getConfig().getBoolean("enable-enderman-effect"))
+        if (hitEntity.getType() == EntityType.ENDERMAN && plugin.getConfig().getBoolean("enable-enderman-effect"))
             world.playEffect(location, Effect.DRAGON_BREATH, 50);
 
         Sound impactSound;
@@ -85,7 +85,9 @@ public class CrazyEggEvents implements Listener {
     //Adds the player to the Set
     @EventHandler
     public void onLaunch(ProjectileLaunchEvent event) {
-        if (!(event.getEntity().getShooter() instanceof Player player)) return;
+        if (!(event.getEntity().getShooter() instanceof Player player))
+            return;
+
         ItemStack item = player.getInventory().getItemInMainHand();
 
         if (!(event.getEntity() instanceof Egg)) {

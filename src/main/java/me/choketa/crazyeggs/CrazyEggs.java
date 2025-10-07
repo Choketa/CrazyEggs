@@ -8,6 +8,8 @@ import me.choketa.crazyeggs.listeners.OnOpJoinEvent;
 import me.choketa.crazyeggs.recipes.CrazyEggRecipe;
 import me.choketa.crazyeggs.recipes.DestructionEggRecipe;
 import me.choketa.crazyeggs.utils.UpdateChecker;
+import org.bukkit.command.Command;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
 
@@ -30,8 +32,18 @@ public final class CrazyEggs extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new DestructionEggEvents(), this);
         getServer().getPluginManager().registerEvents(new OnOpJoinEvent(), this);
 
-        getCommand("getdestructionegg").setExecutor(new GiveDestructionEggCommand());
-        getCommand("getegg").setExecutor(new GiveEggCommand());
+        GiveDestructionEggCommand destruction = new GiveDestructionEggCommand();
+        PluginCommand destructionCommand = getCommand("getdestructionegg");
+
+        destructionCommand.setExecutor(destruction);
+        destructionCommand.setTabCompleter(destruction);
+
+        GiveEggCommand egg = new GiveEggCommand();
+        PluginCommand eggCommand = getCommand("getegg");
+
+        eggCommand.setExecutor(egg);
+        eggCommand.setTabCompleter(egg);
+
 
         new UpdateChecker().getVersion(version -> {
             String curr = "\""+getPlugin().getDescription().getVersion()+"\"";
