@@ -35,10 +35,9 @@ public class DestructionEggEvents implements Listener {
     //Makes the impact happen
     @EventHandler
     public void onHit(ProjectileHitEvent event) {
-        if (!(event.getEntity().getShooter() instanceof Player)) {
+        if (!(event.getEntity().getShooter() instanceof Player player)) {
             return;
         }
-        Player player = (Player) event.getEntity().getShooter();
 
         if (!isDestructionEgg(plugin, event.getEntity())) return;
 
@@ -48,8 +47,7 @@ public class DestructionEggEvents implements Listener {
     //Adds the player to the Set
     @EventHandler
     public void onLaunch(ProjectileLaunchEvent event) {
-        if(!(event.getEntity().getShooter() instanceof Player)) return;
-        Player player = (Player) event.getEntity().getShooter();
+        if(!(event.getEntity().getShooter() instanceof Player player)) return;
         ItemStack item = player.getInventory().getItemInMainHand();
 
         if (!(event.getEntity() instanceof Egg))
