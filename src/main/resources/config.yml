@@ -82,5 +82,8 @@ power: 8
 #Cooldown for the destruction egg. Input in seconds.
 cooldown: 10
 
+#Determines whether explosions caused by the Destruction Egg should set nearby blocks on fire
+should-set-fire: false
+
 #For resourcepacks
 destruction-custom-model-data: -1

@@ -10,7 +10,6 @@ import me.choketa.crazyeggs.recipes.DestructionEggRecipe;
 import me.choketa.crazyeggs.utils.UpdateChecker;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import static me.choketa.crazyeggs.CrazyEggs.getPlugin;
 
 public final class CrazyEggs extends JavaPlugin {
     private CrazyEggRecipe egg;
