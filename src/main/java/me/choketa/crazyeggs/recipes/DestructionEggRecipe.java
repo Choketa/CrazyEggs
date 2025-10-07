@@ -19,18 +19,18 @@ import static me.choketa.crazyeggs.utils.EggUtils.*;
 public class DestructionEggRecipe {
     private final CrazyEggs plugin;
     private final CrazyEggRecipe crazyEgg;
-    private static ItemStack destructionEgg;
+    private static final ItemStack DESTRUCTION_EGG;
 
     public DestructionEggRecipe() {
         this.plugin = getPlugin();
         crazyEgg = plugin.getCrazyEggsRecipe();
     }
     static {
-        destructionEgg = new ItemStack(Material.EGG, getPlugin().getConfig().getInt("upon-destruction-craft-amount"));
-        ItemMeta meta = destructionEgg.getItemMeta();
+        DESTRUCTION_EGG = new ItemStack(Material.EGG, getPlugin().getConfig().getInt("upon-destruction-craft-amount"));
+        ItemMeta meta = DESTRUCTION_EGG.getItemMeta();
 
-        setDestructionName(getPlugin(), destructionEgg, meta);
-        setDestructionLore(getPlugin(), destructionEgg, meta);
+        setDestructionName(DESTRUCTION_EGG, meta);
+        setDestructionLore(DESTRUCTION_EGG, meta);
         meta.addEnchant(Enchantment.DURABILITY, 1, false);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         PersistentDataContainer pdc = meta.getPersistentDataContainer();
@@ -38,17 +38,16 @@ public class DestructionEggRecipe {
         int customModelData = getPlugin().getConfig().getInt("destruction-custom-model-data");
         if (customModelData != -1)
             meta.setCustomModelData(customModelData);
-        destructionEgg.setItemMeta(meta);
+        DESTRUCTION_EGG.setItemMeta(meta);
     }
 
     public ItemStack eggItem() {
-        return destructionEgg;
+        return DESTRUCTION_EGG;
     }
 
     public void eggCraft() {
-        // Not ideal customization, but for now that's good enough.
+        // Not ideal customization, but for now this approach is good enough.
         if (!plugin.getConfig().getBoolean("is-destruction-craftable")) return;
-        eggItem();
         ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(plugin,"destructionegg"), eggItem());
 
         recipe.shape("EEE","ECE","EEE");
