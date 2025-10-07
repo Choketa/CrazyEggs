@@ -31,7 +31,7 @@ public class DestructionEggRecipe {
 
         setDestructionName(DESTRUCTION_EGG, meta);
         setDestructionLore(DESTRUCTION_EGG, meta);
-        meta.addEnchant(Enchantment.DURABILITY, 1, false);
+        meta.addEnchant(Enchantment.UNBREAKING, 1, false);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         PersistentDataContainer pdc = meta.getPersistentDataContainer();
         pdc.set(new NamespacedKey(getPlugin(),"destructionegg"), PersistentDataType.INTEGER,69);
