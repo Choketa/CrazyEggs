@@ -13,12 +13,12 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.20-R0.1-SNAPSHOT")
 }
 
 
 group = "me.chocketa"
-version = "1.1.3"
+version = "1.1.4"
 description = "CrazyEggs"
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(21))
