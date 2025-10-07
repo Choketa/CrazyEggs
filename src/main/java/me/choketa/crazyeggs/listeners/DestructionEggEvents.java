@@ -43,7 +43,7 @@ public class DestructionEggEvents implements Listener {
         if (!isDestructionEgg(proj)) return;
 
         float power = (float) plugin.getConfig().getDouble("power");
-        player.getWorld().createExplosion(proj.getLocation(), power, false);
+        player.getWorld().createExplosion(proj.getLocation(), power, plugin.getConfig().getBoolean("should-set-fire"));
     }
     //Adds the player to the Set
     @EventHandler
@@ -92,7 +92,7 @@ public class DestructionEggEvents implements Listener {
         if (player.hasDiscoveredRecipe(recipe)) return;
         player.discoverRecipe(recipe);
     }
-    //Handles the Crafting. Only with the actual, unedited Crazy Eggs.
+    //Handles the Crafting. Only with the actual, unedited Destruction Eggs Eggs.
     @EventHandler
     public void onCraft(PrepareItemCraftEvent event) {
         if (!plugin.getConfig().getBoolean("can-craft-items")) return;

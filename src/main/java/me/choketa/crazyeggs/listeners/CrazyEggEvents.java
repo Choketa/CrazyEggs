@@ -32,12 +32,12 @@ public class CrazyEggEvents implements Listener {
     //Makes the impact happen
     @EventHandler
     public void onHit(ProjectileHitEvent event) {
-        if (!(event.getEntity().getShooter() instanceof Player player)) {
+        if (!(event.getEntity().getShooter() instanceof Player))
             return;
-        }
-        if (!(event.getHitEntity() instanceof LivingEntity hitEntity)) {
+
+        if (!(event.getHitEntity() instanceof LivingEntity hitEntity))
             return;
-        }
+
         if (!isCrazyEgg(event.getEntity())) return;
 
         World world = hitEntity.getWorld();
