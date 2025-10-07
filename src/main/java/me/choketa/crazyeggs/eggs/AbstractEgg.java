@@ -52,10 +52,9 @@ public abstract class AbstractEgg {
     }
     public abstract void setInfo();
     public void addDefault(@NotNull String path, Object obj, @Nullable List<String> description) {
-        customFile.addDefault(path, obj);
+        customFile.set(path, obj);
         if (description != null)
             customFile.setComments(path, description);
-        save();
     }
     public void addAttribute(@NotNull String path, Object obj, @Nullable List<String> description) {
         customFile.set(path, obj);

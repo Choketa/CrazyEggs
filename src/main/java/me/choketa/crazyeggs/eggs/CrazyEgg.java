@@ -25,6 +25,7 @@ public class CrazyEgg extends AbstractEgg{
         addDefault("damage",
                 15,
                 List.of("The damage inflicted upon an entity when hit"));
+        save();
 
     }
 }
