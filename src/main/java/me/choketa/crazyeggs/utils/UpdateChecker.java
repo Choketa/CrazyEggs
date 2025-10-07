@@ -28,9 +28,6 @@ public class UpdateChecker {
             } catch (IOException e) {
                 getPlugin().getLogger().warning("Unable to fetch version");
             }
-
-
-
         });
     }
 }

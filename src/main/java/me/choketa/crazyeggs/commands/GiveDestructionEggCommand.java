@@ -56,4 +56,3 @@ public class GiveDestructionEggCommand implements CommandExecutor {
         return true;
     }
 }
-

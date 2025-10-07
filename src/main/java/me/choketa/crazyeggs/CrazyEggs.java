@@ -54,4 +54,3 @@ public final class CrazyEggs extends JavaPlugin {
         return degg;
     }
 }
-

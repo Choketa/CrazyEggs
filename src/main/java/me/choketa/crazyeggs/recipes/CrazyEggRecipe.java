@@ -31,7 +31,7 @@ public class CrazyEggRecipe {
 
         setCrazyName(CRAZY_EGG, meta);
         setCrazyLore(CRAZY_EGG, meta);
-        meta.addEnchant(Enchantment.DURABILITY, 1, false);
+        meta.addEnchant(Enchantment.UNBREAKING, 1, false);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         PersistentDataContainer pdc = meta.getPersistentDataContainer();
         pdc.set(new NamespacedKey(getPlugin(),"crazyegg"), PersistentDataType.INTEGER,69);

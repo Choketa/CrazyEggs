@@ -59,9 +59,9 @@ public class CrazyEggEvents implements Listener {
 
         hitEntity.damage(plugin.getConfig().getInt("damage"));
         if (impactSound != null)
-            world.playSound(hitEntity, impactSound, 0.5f, 1f);
+         world.playSound(hitEntity, impactSound, 0.5f, 1f);
         if (particle != null)
-            world.spawnParticle(particle, location, plugin.getConfig().getInt("particle-count"));
+         world.spawnParticle(particle, location, plugin.getConfig().getInt("particle-count"));
 
         Vector direction = event.getEntity().getVelocity().multiply(plugin.getConfig().getDouble("velocity-multiplier"));
         hitEntity.setVelocity(direction.setY(plugin.getConfig().getDouble("velocity-set-y")));
