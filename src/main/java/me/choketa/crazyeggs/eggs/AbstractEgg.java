@@ -15,12 +15,12 @@ import java.util.List;
 import static me.choketa.crazyeggs.CrazyEggs.getPlugin;
 
 public abstract class AbstractEgg {
-    String displayName;
+    protected String displayName;
     private ItemStack eggItem;
     private Listener listener;
     private ShapedRecipe recipe;
     private File file;
-    private FileConfiguration customFile;
+    private YamlConfiguration customFile;
     public AbstractEgg(String name) {
         this.file = new File(getPlugin().getDataFolder(), name+".yml");
         if (!file.exists()) {
@@ -30,9 +30,11 @@ public abstract class AbstractEgg {
                 //
             }
         }
-        this.displayName = name;
+        this.displayName = "&#b32222&l"+name;
         customFile = YamlConfiguration.loadConfiguration(file);
         customFile.options().copyDefaults(true);
+        save();
+        setInfo();
         save();
     }
     public FileConfiguration get() {
@@ -50,7 +52,24 @@ public abstract class AbstractEgg {
         customFile = YamlConfiguration.loadConfiguration(file);
         return customFile;
     }
-    public abstract void setInfo();
+    public void setInfo() {
+        addDefault("display-name",
+                displayName,
+                List.of("The name of the egg item."));
+
+        addDefault("lore",
+                List.of("&cThis is the default egg lore of the egg item."),
+                List.of("The lore of the egg item. Keep the dash only if you want no lore."));
+
+        addDefault("is-craftable",
+                true,
+                List.of("Determines whether the egg is craftable or not."));
+
+        addDefault("damage",
+                15,
+                List.of("The damage inflicted upon an entity when hit"));
+
+    }
     public void addDefault(@NotNull String path, Object obj, @Nullable List<String> description) {
         customFile.set(path, obj);
         if (description != null)

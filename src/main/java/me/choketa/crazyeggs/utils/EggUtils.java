@@ -37,7 +37,7 @@ public class EggUtils {
     }
     public static void setCrazyName(ItemStack item, ItemMeta meta) {
         String name = getPlugin().getConfig().getString("crazy-egg-name");
-        meta.displayName(format(name));
+        meta.itemName(format(name));
         item.setItemMeta(meta);
     }
     public static boolean isDestructionEgg(ItemStack item) {
@@ -61,7 +61,7 @@ public class EggUtils {
     }
     public static void setDestructionName(ItemStack item, ItemMeta meta) {
         String name = getPlugin().getConfig().getString("destruction-egg-name");
-        meta.displayName(format(name));
+        meta.itemName(format(name));
         item.setItemMeta(meta);
     }
 }
