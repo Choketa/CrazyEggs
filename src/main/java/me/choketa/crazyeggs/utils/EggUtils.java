@@ -22,8 +22,8 @@ public class EggUtils {
         return item.getItemMeta().getPersistentDataContainer().has(new NamespacedKey(getPlugin(), "crazyegg"), PersistentDataType.INTEGER);
     }
     public static boolean isCrazyEgg(Entity entity) {
-        if (!(entity instanceof Egg)) return false;
-        ItemStack item = ((Egg) entity).getItem();
+        if (!(entity instanceof Egg egg)) return false;
+        ItemStack item = egg.getItem();
         if (!item.hasItemMeta()) return false;
         return item.getItemMeta().getPersistentDataContainer().has(new NamespacedKey(getPlugin(), "crazyegg"), PersistentDataType.INTEGER);
     }
@@ -45,8 +45,8 @@ public class EggUtils {
         return item.getItemMeta().getPersistentDataContainer().has(new NamespacedKey(getPlugin(), "destructionegg"), PersistentDataType.INTEGER);
     }
     public static boolean isDestructionEgg(Entity entity) {
-        if (!(entity instanceof Egg)) return false;
-        ItemStack item = ((Egg) entity).getItem();
+        if (!(entity instanceof Egg egg)) return false;
+        ItemStack item = egg.getItem();
         if (!item.hasItemMeta()) return false;
         return item.getItemMeta().getPersistentDataContainer().has(new NamespacedKey(getPlugin(), "destructionegg"), PersistentDataType.INTEGER);
     }
