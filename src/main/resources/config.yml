@@ -56,6 +56,8 @@ velocity-set-y: 0.5
 #If you want to have no sound, simply remove the sound name
 sound-when-hit: "ENTITY_LIGHTNING_BOLT_IMPACT"
 
+#Determines whether the egg is decorated with an enchantment glint
+crazy-set-enchantment-glint: true
 
 #For resourcepacks
 crazy-custom-model-data: -1
@@ -85,6 +87,9 @@ cooldown: 10
 
 #Determines whether explosions caused by the Destruction Egg should set nearby blocks on fire
 should-set-fire: false
+
+#Determines whether the egg is decorated with an enchantment glint
+destruction-set-enchantment-glint: true
 
 #For resourcepacks
 destruction-custom-model-data: -1
