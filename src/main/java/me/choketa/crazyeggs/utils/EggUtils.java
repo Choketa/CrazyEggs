@@ -1,6 +1,7 @@
 package me.choketa.crazyeggs.utils;
 
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Egg;
 import org.bukkit.entity.Entity;
@@ -8,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static me.choketa.crazyeggs.CrazyEggs.getPlugin;
@@ -27,13 +29,15 @@ public class EggUtils {
     }
     public static void setCrazyLore(ItemStack item, ItemMeta meta) {
         List<String> lore = getPlugin().getConfig().getStringList("crazy-egg-lore");
-        lore.replaceAll(ColorUtils::format);
-        meta.setLore(lore);
+        List<Component> actualLore = new ArrayList<>();
+        for (String str : lore)
+            actualLore.add(ColorUtils.format(str));
+        meta.lore(actualLore);
         item.setItemMeta(meta);
     }
     public static void setCrazyName(ItemStack item, ItemMeta meta) {
         String name = getPlugin().getConfig().getString("crazy-egg-name");
-        meta.setDisplayName(format(name));
+        meta.displayName(format(name));
         item.setItemMeta(meta);
     }
     public static boolean isDestructionEgg(ItemStack item) {
@@ -48,13 +52,16 @@ public class EggUtils {
     }
     public static void setDestructionLore(ItemStack item, ItemMeta meta) {
         List<String> lore = getPlugin().getConfig().getStringList("destruction-egg-lore");
-        lore.replaceAll(ColorUtils::format);
-        meta.setLore(lore);
+        List<Component> actualLore = new ArrayList<>();
+        for (String str : lore)
+            actualLore.add(ColorUtils.format(str));
+
+        meta.lore(actualLore);
         item.setItemMeta(meta);
     }
     public static void setDestructionName(ItemStack item, ItemMeta meta) {
         String name = getPlugin().getConfig().getString("destruction-egg-name");
-        meta.setDisplayName(format(name));
+        meta.displayName(format(name));
         item.setItemMeta(meta);
     }
 }
