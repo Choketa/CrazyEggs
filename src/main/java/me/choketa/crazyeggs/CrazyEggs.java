@@ -26,7 +26,6 @@ public final class CrazyEggs extends JavaPlugin {
         egg.eggCraft();
         degg = new DestructionEggRecipe();
         degg.eggCraft();
-
         getServer().getPluginManager().registerEvents(new CrazyEggEvents(), this);
         getServer().getPluginManager().registerEvents(new DestructionEggEvents(), this);
         getServer().getPluginManager().registerEvents(new OnOpJoinEvent(), this);
@@ -46,7 +45,7 @@ public final class CrazyEggs extends JavaPlugin {
 
         new UpdateChecker().getVersion(version -> {
             String curr = "\""+getPlugin().getDescription().getVersion()+"\"";
-            if (version.replaceFirst("r\":\"[0-9]\\.[0-9]+\\.[0-9]+(\\.[0-9]+)?\"", "r\":"+curr).equals(version)) {
+            if (version.replaceFirst("\"[0-9]\\.[0-9]\\.[0-9]+\"", curr).equals(version)) {
                 getLogger().info("There is not a new update available.");
             } else {
                 getLogger().warning("There is a new update available!");
