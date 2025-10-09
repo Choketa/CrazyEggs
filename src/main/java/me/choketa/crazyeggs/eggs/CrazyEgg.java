@@ -1,8 +1,6 @@
 package me.choketa.crazyeggs.eggs;
 
-import java.util.List;
-
-public class CrazyEgg extends AbstractEgg{
+public class CrazyEgg extends PluginEgg {
     public CrazyEgg(String name) {
         super(name);
     }

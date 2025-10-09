@@ -21,6 +21,12 @@ public class EggUtils {
         if (!item.hasItemMeta()) return false;
         return item.getItemMeta().getPersistentDataContainer().has(new NamespacedKey(getPlugin(), "crazyegg"), PersistentDataType.INTEGER);
     }
+    public static List<Component> adaptLore(List<String> lore) {
+        List<Component> actualLore = new ArrayList<>();
+        for (String str : lore)
+            actualLore.add(ColorUtils.format(str));
+        return actualLore;
+    }
     public static boolean isCrazyEgg(Entity entity) {
         if (!(entity instanceof Egg egg)) return false;
         ItemStack item = egg.getItem();
@@ -29,10 +35,7 @@ public class EggUtils {
     }
     public static void setCrazyLore(ItemStack item, ItemMeta meta) {
         List<String> lore = getPlugin().getConfig().getStringList("crazy-egg-lore");
-        List<Component> actualLore = new ArrayList<>();
-        for (String str : lore)
-            actualLore.add(ColorUtils.format(str));
-        meta.lore(actualLore);
+        meta.lore(adaptLore(lore));
         item.setItemMeta(meta);
     }
     public static void setCrazyName(ItemStack item, ItemMeta meta) {
@@ -52,11 +55,7 @@ public class EggUtils {
     }
     public static void setDestructionLore(ItemStack item, ItemMeta meta) {
         List<String> lore = getPlugin().getConfig().getStringList("destruction-egg-lore");
-        List<Component> actualLore = new ArrayList<>();
-        for (String str : lore)
-            actualLore.add(ColorUtils.format(str));
-
-        meta.lore(actualLore);
+        meta.lore(adaptLore(lore));
         item.setItemMeta(meta);
     }
     public static void setDestructionName(ItemStack item, ItemMeta meta) {

@@ -1,6 +1,7 @@
 package me.choketa.crazyeggs;
 
 import me.choketa.crazyeggs.commands.GiveDestructionEggCommand;
+import me.choketa.crazyeggs.eggs.EggManager;
 import me.choketa.crazyeggs.listeners.CrazyEggEvents;
 import me.choketa.crazyeggs.commands.GiveEggCommand;
 import me.choketa.crazyeggs.listeners.DestructionEggEvents;
@@ -21,12 +22,12 @@ public final class CrazyEggs extends JavaPlugin {
         plugin = this;
         getConfig().options().copyDefaults();
         saveDefaultConfig();
+        EggManager.getEggManager();
 
         egg = new CrazyEggRecipe();
         egg.eggCraft();
         degg = new DestructionEggRecipe();
         degg.eggCraft();
-
         getServer().getPluginManager().registerEvents(new CrazyEggEvents(), this);
         getServer().getPluginManager().registerEvents(new DestructionEggEvents(), this);
         getServer().getPluginManager().registerEvents(new OnOpJoinEvent(), this);
