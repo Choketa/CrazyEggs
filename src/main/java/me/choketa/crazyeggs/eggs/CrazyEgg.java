@@ -1,8 +1,8 @@
 package me.choketa.crazyeggs.eggs;
 
 public class CrazyEgg extends PluginEgg {
-    public CrazyEgg(String name) {
-        super(name);
+    public CrazyEgg() {
+        super("Crazy_Egg");
     }
 
 //    @Override

@@ -1,6 +1,7 @@
 package me.choketa.crazyeggs;
 
 import me.choketa.crazyeggs.commands.GiveDestructionEggCommand;
+import me.choketa.crazyeggs.eggs.CrazyEgg;
 import me.choketa.crazyeggs.eggs.EggManager;
 import me.choketa.crazyeggs.listeners.CrazyEggEvents;
 import me.choketa.crazyeggs.commands.GiveEggCommand;
@@ -22,7 +23,8 @@ public final class CrazyEggs extends JavaPlugin {
         plugin = this;
         getConfig().options().copyDefaults();
         saveDefaultConfig();
-        EggManager.getEggManager();
+        CrazyEgg crazyEgg = new CrazyEgg();
+        EggManager.getEggManager().loadEggs();
 
         egg = new CrazyEggRecipe();
         egg.eggCraft();
@@ -47,7 +49,9 @@ public final class CrazyEggs extends JavaPlugin {
 
         new UpdateChecker().getVersion(version -> {
             String curr = "\""+getPlugin().getDescription().getVersion()+"\"";
-            if (version.replaceFirst("\"[0-9]\\.[0-9]+\\.[0-9]+\"", curr).equals(version)) {
+            getLogger().info("curr:"+curr);
+            getLogger().info(version);
+            if (version.replaceFirst("\"[0-9]\\.[0-9]\\.[0-9]+\"", curr).equals(version)) {
                 getLogger().info("There is not a new update available.");
             } else {
                 getLogger().warning("There is a new update available!");

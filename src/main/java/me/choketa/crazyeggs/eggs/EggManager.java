@@ -11,16 +11,19 @@ public class EggManager {
     private static EggManager eggManager;
     private final CrazyEggs plugin;
     private final List<PluginEgg> eggs;
+    private final File eggsFolder;
 
     private EggManager() {
         this.plugin = CrazyEggs.getPlugin();
         this.eggs = new ArrayList<>();
-        File eggsFolder = new File(plugin.getDataFolder()+"/eggs");
+        eggsFolder = new File(plugin.getDataFolder()+"/eggs");
         try {
             eggsFolder.createNewFile();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+    public void loadEggs() {
         File[] files = new File(eggsFolder.getPath()).listFiles();
 
         for (File file : files)
@@ -32,6 +35,11 @@ public class EggManager {
         if (eggManager == null)
            eggManager = new EggManager();
         return eggManager;
+    }
+    public PluginEgg getEggByName(String name) {
+        for (PluginEgg egg : eggs)
+            if (egg.getName().equalsIgnoreCase(name)) return egg;
+        return null;
     }
     public List<PluginEgg> getEggs() {
         return eggs;

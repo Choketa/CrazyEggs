@@ -39,12 +39,12 @@ public class PluginEgg {
             try {
                 isNew = file.createNewFile();
             } catch (IOException e) {
-                //
+                getPlugin().getLogger().warning("Unable to create file for "+name);
             }
         }
-        this.displayName = "&#b32222&l"+name;
         customFile = YamlConfiguration.loadConfiguration(file);
         customFile.options().copyDefaults(true);
+        this.displayName = isNew ? "&#b32222&l"+name.replace('_', ' ') : get("display-name");
         if (isNew)
          setDefaults();
         save();
@@ -95,31 +95,36 @@ public class PluginEgg {
         set("custom-model-data", -1, Collections.singletonList("For resourcepacks"));
     }
     public ItemStack getEggItem() {
-        if (eggItem != null)
-            return eggItem;
-        this.eggItem = new ItemStack(Material.EGG);
-        eggItem.editMeta(Damageable.class, meta -> {
-            meta.itemName(ColorUtils.format(get("display-name")));
-            meta.lore(EggUtils.adaptLore(get("lore")));
-            meta.setDamage(get("damage"));
-            if (get("set-glint")) {
-                meta.addEnchant(Enchantment.UNBREAKING, 1, false);
-                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            }
-            int customModelData = get("custom-model-data");
-            if (customModelData != -1)
-                meta.setCustomModelData(customModelData);
-            meta.getPersistentDataContainer().set(new NamespacedKey(getPlugin(), "crazyeggs"+name), PersistentDataType.BOOLEAN, true);
-        });
-        return eggItem;
+        if (eggItem == null) {
+            this.eggItem = new ItemStack(Material.EGG);
+            eggItem.editMeta(Damageable.class, meta -> {
+                meta.itemName(ColorUtils.format(get("display-name")));
+                List<String> lore = get("lore");
+                if (lore != null && !lore.isEmpty())
+                 meta.lore(EggUtils.adaptLore(lore));
+                meta.setDamage(get("damage"));
+                if (get("set-glint")) {
+                    meta.addEnchant(Enchantment.UNBREAKING, 1, false);
+                    meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+                }
+                int customModelData = get("custom-model-data");
+                if (customModelData != -1)
+                    meta.setCustomModelData(customModelData);
+                meta.getPersistentDataContainer().set(new NamespacedKey(getPlugin(), "crazyeggs" + name), PersistentDataType.BOOLEAN, true);
+            });
+        }
+        return eggItem.clone();
     }
     public void set(@NotNull String path, Object obj, @Nullable List<String> description) {
         customFile.set(path, obj);
         if (description != null)
             customFile.setComments(path, description);
     }
-    public void addAttribute(@NotNull String path, Object obj, @Nullable List<String> description) {
-        customFile.set(path, obj);
-        customFile.setComments(path, description);
+    public String getName() {
+        return name;
+    }
+
+    public String getDisplayName() {
+        return displayName;
     }
 }
