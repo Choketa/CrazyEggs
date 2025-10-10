@@ -1,7 +1,7 @@
 package me.choketa.crazyeggs.commands;
 
 import me.choketa.crazyeggs.eggs.EggManager;
-import me.choketa.crazyeggs.eggs.PluginEgg;
+import me.choketa.crazyeggs.eggs.eggs.PluginEgg;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
@@ -45,6 +45,10 @@ public class GetEgg implements CommandExecutor, TabCompleter {
         PluginEgg egg = manager.getEggByName(args[1]);
         if (egg == null) {
             sender.sendMessage(format("&c[CrazyEggs] No egg was found"));
+            return true;
+        }
+        if (sender instanceof Player player && !player.hasPermission("crazyeggs."+egg.getSimpleName()+".getegg")) {
+            player.sendMessage(format("&c[CrazyEggs] You do not have the permission to obtain this egg."));
             return true;
         }
         ItemStack eggStack = egg.getEggItem();

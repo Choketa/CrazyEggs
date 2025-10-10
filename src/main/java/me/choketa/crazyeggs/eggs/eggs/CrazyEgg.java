@@ -1,9 +1,13 @@
-package me.choketa.crazyeggs.eggs;
+package me.choketa.crazyeggs.eggs.eggs;
+
+import java.util.List;
 
 public class CrazyEgg extends PluginEgg {
     public CrazyEgg() {
         super("Crazy_Egg");
+        if (isOld) return;
         set("display-name", "&c&lCrazy &#b32222&lEgg");
+        set("lore", List.of("&cKill with the crazy egg!"));
         save();
     }
 

@@ -1,5 +1,7 @@
-package me.choketa.crazyeggs.eggs;
+package me.choketa.crazyeggs.eggs.eggs;
 
+import me.choketa.crazyeggs.eggs.EggPermissions;
+import me.choketa.crazyeggs.eggs.EggRecipe;
 import me.choketa.crazyeggs.utils.ColorUtils;
 import me.choketa.crazyeggs.utils.EggUtils;
 import me.choketa.crazyeggs.utils.Pair;
@@ -12,7 +14,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -26,10 +27,11 @@ import java.util.*;
 import static me.choketa.crazyeggs.CrazyEggs.getPlugin;
 
 public class PluginEgg {
+    protected final boolean isOld;
     private final String name;
+    private final String simpleName;
     private String displayName;
     private ItemStack eggItem;
-    private ShapedRecipe recipe;
     private final File file;
     private YamlConfiguration customFile;
     private final Map<String, Object> cache;
@@ -40,8 +42,9 @@ public class PluginEgg {
 
     public PluginEgg(String name) {
         this.name = name;
+        this.simpleName = name.replace("_","").toLowerCase();
         this.file = new File(getPlugin().getDataFolder() + "/eggs", name + ".yml");
-        boolean isOld = file.exists();
+        this.isOld = file.exists();
         if (!isOld) {
             try {
                 file.createNewFile();
@@ -60,6 +63,9 @@ public class PluginEgg {
             cache.put(str, get(str));
 
         key = new NamespacedKey(getPlugin(), "crazyeggs" + name);
+        if (getBoolean("is-craftable"))
+           new EggRecipe(this);
+        new EggPermissions(this);
     }
 
     public <T> T get(String path) {
@@ -102,6 +108,13 @@ public class PluginEgg {
         set("is-craftable",
                 true,
                 Collections.singletonList("Determines whether the egg is craftable or not"));
+        set("recipe",
+                List.of("EEE", "ETE", "EEE"),
+                Collections.singletonList("The crafting layout for the recipe"));
+        set("materials",
+                Map.of('E', "EGG", 'T', "TNT"),
+                Collections.singletonList("The materials that correspond to each letter"));
+
 
         set("upon-craft-amount",
                 4,
@@ -191,10 +204,15 @@ public class PluginEgg {
         customFile.set(path, obj);
     }
 
+    //e.g Crazy_eggs
     public String getName() {
         return name;
     }
-
+    //e.g crazyeggs
+    public String getSimpleName() {
+        return simpleName;
+    }
+    //E.g &cCrazy Eggs!!!!!!!
     public String getDisplayName() {
         return displayName;
     }

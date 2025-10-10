@@ -1,6 +1,7 @@
 package me.choketa.crazyeggs.eggs;
 
 import me.choketa.crazyeggs.CrazyEggs;
+import me.choketa.crazyeggs.eggs.eggs.PluginEgg;
 import me.choketa.crazyeggs.utils.Pair;
 import org.bukkit.*;
 import org.bukkit.entity.Egg;
@@ -31,6 +32,7 @@ public class EggListener implements Listener {
         this.plugin = CrazyEggs.getPlugin();
         this.manager = EggManager.getEggManager();
     }
+
     //Makes the damage-type impact to happen
     @EventHandler
     public void onHit(ProjectileHitEvent event) {
@@ -58,7 +60,7 @@ public class EggListener implements Listener {
         }
         if (particles != null) {
             for (Pair<Particle, Integer> particle : particles)
-             world.spawnParticle(particle.a(), location, particle.b());
+                world.spawnParticle(particle.a(), location, particle.b());
         }
         if (potionEffects != null) {
             for (PotionEffect effect : potionEffects)
@@ -85,6 +87,7 @@ public class EggListener implements Listener {
             world.dropItem(location, eggItem);
         }
     }
+
     //Makes the explosion-type impact to happen
     @EventHandler
     public void onExplosionHit(ProjectileHitEvent event) {
@@ -127,34 +130,41 @@ public class EggListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        NamespacedKey recipe = new NamespacedKey(plugin, "egg");
-        if (!player.hasPermission("crazyeggs.craft") && player.hasDiscoveredRecipe(recipe))
-            player.undiscoverRecipe(recipe);
-        if (player.hasDiscoveredRecipe(recipe)) return;
-        player.discoverRecipe(recipe);
+        for (PluginEgg egg : manager.getEggs()) {
+            NamespacedKey recipe = egg.getKey();
+            if (!player.hasPermission("crazyeggs."+egg.getSimpleName()+".craft") && player.hasDiscoveredRecipe(recipe)) {
+                player.undiscoverRecipe(recipe);
+                continue;
+            }
+            if (!player.hasDiscoveredRecipe(recipe))
+             player.discoverRecipe(recipe);
+        }
     }
 
-//    //Disables crafting with the eggs or if player has no permission
-//    @EventHandler
-//    public void onCraft(PrepareItemCraftEvent event) {
-//        if (!plugin.getConfig().getBoolean("can-craft-items")) return;
-//        Player player = (Player) event.getInventory().getHolder();
-//        if (player == null) return;
-//        if (event.getInventory().getResult() == null) return;
-//        if (!player.hasPermission("crazyeggs.craft") && event.getInventory().getResult().isSimilar(egg.eggItem())) {
-//            event.getInventory().setResult(new ItemStack(Material.AIR));
-//            return;
-//        }
-//        if (!event.getInventory().contains(Material.EGG) || !event.getInventory().contains(egg.eggItem())) return;
-//
-//        //It starts from index 1 to exclude the result slot
-//        for (int i = 1; i <= event.getInventory().getMatrix().length; i++) {
-//            ItemStack item = event.getInventory().getItem(i);
-//
-//            if (item == null) continue;
-//            if (!isCrazyEgg(item)) continue;
-//            event.getInventory().setResult(new ItemStack(Material.AIR));
-//
-//        }
-//    }
+    //Disables crafting with the eggs or if player has no permission
+    @EventHandler
+    public void onCraft(PrepareItemCraftEvent event) {
+        Player player = (Player) event.getInventory().getHolder();
+        if (player == null) return;
+        ItemStack result = event.getInventory().getResult();
+        if (result == null) return;
+
+        for (PluginEgg egg : manager.getEggs()) {
+            if (!event.getInventory().contains(Material.EGG) || !event.getInventory().contains(egg.getEggItem())) continue;
+            if (!result.isSimilar(egg.getEggItem())) continue;
+            if (player.hasPermission("crazyeggs." + egg.getSimpleName() + ".craft")) continue;
+            event.getInventory().setResult(new ItemStack(Material.AIR));
+            return;
+        }
+        //It starts from index 1 to exclude the result slot
+        for (int i = 1; i <= event.getInventory().getMatrix().length; i++) {
+            ItemStack item = event.getInventory().getItem(i);
+            if (item == null) continue;
+            for (PluginEgg egg : manager.getEggs()) {
+                if (!egg.getEggItem().isSimilar(item)) continue;
+                event.getInventory().setResult(new ItemStack(Material.AIR));
+                return;
+            }
+        }
+    }
 }

@@ -1,15 +1,13 @@
 package me.choketa.crazyeggs.eggs;
 
 import me.choketa.crazyeggs.CrazyEggs;
+import me.choketa.crazyeggs.eggs.eggs.PluginEgg;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Egg;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Projectile;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
 
 import java.io.File;
 import java.io.IOException;
