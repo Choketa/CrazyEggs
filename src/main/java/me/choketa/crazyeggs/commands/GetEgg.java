@@ -2,9 +2,7 @@ package me.choketa.crazyeggs.commands;
 
 import me.choketa.crazyeggs.eggs.EggManager;
 import me.choketa.crazyeggs.eggs.PluginEgg;
-import me.choketa.crazyeggs.utils.ColorUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -20,15 +18,15 @@ import java.util.List;
 import static me.choketa.crazyeggs.eggs.EggManager.getEggManager;
 import static me.choketa.crazyeggs.utils.ColorUtils.format;
 
-public class GiveEgg implements CommandExecutor, TabCompleter {
+public class GetEgg implements CommandExecutor, TabCompleter {
     private final EggManager manager;
-    public GiveEgg() {
+    public GetEgg() {
         this.manager = getEggManager();
     }
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (args.length >= 4) {
-            sender.sendMessage(format("&c[CrazyEggs] Proper usage: &e/getegg <player> <egg> <amount>"));
+            sender.sendMessage(format("&c[CrazyEggs] Proper usage: &e/giveegg <player> <egg> <amount>"));
             return true;
         }
         if (args.length == 0) {
@@ -53,7 +51,7 @@ public class GiveEgg implements CommandExecutor, TabCompleter {
         if (args.length == 2) {
             eggStack.setAmount(1);
             exactPlayer.getInventory().addItem(eggStack);
-            sender.sendMessage(format("&4[CrazyEggs] &fGave 1 "+egg.getDisplayName()+" to "+exactPlayer.getName()));
+            sender.sendMessage(format("&4[CrazyEggs] &fGave 1 "+egg.getDisplayName()+"&r to "+exactPlayer.getName()));
             exactPlayer.playSound(exactPlayer, Sound.ENTITY_ITEM_PICKUP, 1f, 1f);
             return true;
         }
@@ -61,7 +59,7 @@ public class GiveEgg implements CommandExecutor, TabCompleter {
             int parse = Integer.parseInt(args[2]);
             eggStack.setAmount(parse);
             exactPlayer.getInventory().addItem(eggStack);
-            sender.sendMessage(format("&4[CrazyEggs] &fGave " + parse + " "+egg.getDisplayName()+" to " + exactPlayer.getName()));
+            sender.sendMessage(format("&4[CrazyEggs] &fGave " + parse + " "+egg.getDisplayName()+"&r to " + exactPlayer.getName()));
             exactPlayer.playSound(exactPlayer, Sound.ENTITY_ITEM_PICKUP, 1f, 1f);
         } catch (NumberFormatException e) {
             sender.sendMessage(format("&c[CrazyEggs] Proper usage: &e/getegg <player> <egg> <amount>"));

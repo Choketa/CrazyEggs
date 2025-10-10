@@ -1,11 +1,22 @@
 package me.choketa.crazyeggs.eggs;
 
 import me.choketa.crazyeggs.CrazyEggs;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.entity.Egg;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Projectile;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static me.choketa.crazyeggs.CrazyEggs.getPlugin;
 
 public class EggManager {
     private static EggManager eggManager;
@@ -43,5 +54,25 @@ public class EggManager {
     }
     public List<PluginEgg> getEggs() {
         return eggs;
+    }
+
+    public PluginEgg getEggByPDC(Projectile entity) {
+        if (!(entity instanceof Egg egg)) return null;
+        ItemStack item = egg.getItem();
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) return null;
+        PersistentDataContainer pdc = meta.getPersistentDataContainer();
+        for (PluginEgg pluginEgg : eggs)
+            if (pdc.has(pluginEgg.getKey())) return pluginEgg;
+        return null;
+    }
+    public PluginEgg getEggByPDC(ItemStack item) {
+        if (item.getType() != Material.EGG) return null;
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) return null;
+        PersistentDataContainer pdc = meta.getPersistentDataContainer();
+        for (PluginEgg pluginEgg : eggs)
+            if (pdc.has(pluginEgg.getKey())) return pluginEgg;
+        return null;
     }
 }

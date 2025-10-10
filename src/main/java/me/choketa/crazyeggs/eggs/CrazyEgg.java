@@ -3,6 +3,8 @@ package me.choketa.crazyeggs.eggs;
 public class CrazyEgg extends PluginEgg {
     public CrazyEgg() {
         super("Crazy_Egg");
+        set("display-name", "&c&lCrazy &#b32222&lEgg");
+        save();
     }
 
 //    @Override

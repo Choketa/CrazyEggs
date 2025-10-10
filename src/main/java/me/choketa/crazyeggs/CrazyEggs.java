@@ -1,7 +1,9 @@
 package me.choketa.crazyeggs;
 
 import me.choketa.crazyeggs.commands.GiveDestructionEggCommand;
+import me.choketa.crazyeggs.commands.GetEgg;
 import me.choketa.crazyeggs.eggs.CrazyEgg;
+import me.choketa.crazyeggs.eggs.DestructionEgg;
 import me.choketa.crazyeggs.eggs.EggManager;
 import me.choketa.crazyeggs.listeners.CrazyEggEvents;
 import me.choketa.crazyeggs.commands.GiveEggCommand;
@@ -13,17 +15,21 @@ import me.choketa.crazyeggs.utils.UpdateChecker;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Random;
+
 
 public final class CrazyEggs extends JavaPlugin {
     private CrazyEggRecipe egg;
     private DestructionEggRecipe degg;
     private static CrazyEggs plugin;
+    public static final Random RANDOM = new Random();
     @Override
     public void onEnable() {
         plugin = this;
         getConfig().options().copyDefaults();
         saveDefaultConfig();
-        CrazyEgg crazyEgg = new CrazyEgg();
+        new CrazyEgg();
+        new DestructionEgg();
         EggManager.getEggManager().loadEggs();
 
         egg = new CrazyEggRecipe();
@@ -46,6 +52,12 @@ public final class CrazyEggs extends JavaPlugin {
 
         eggCommand.setExecutor(egg);
         eggCommand.setTabCompleter(egg);
+
+        GetEgg testEgg = new GetEgg();
+        PluginCommand testEggCmd = getCommand("testgiveegg");
+
+        testEggCmd.setExecutor(testEgg);
+        testEggCmd.setTabCompleter(testEgg);
 
 
         new UpdateChecker().getVersion(version -> {
