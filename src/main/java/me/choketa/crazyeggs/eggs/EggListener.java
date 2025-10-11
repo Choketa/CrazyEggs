@@ -19,7 +19,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.Vector;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 import static me.choketa.crazyeggs.CrazyEggs.RANDOM;
 import static me.choketa.crazyeggs.utils.ColorUtils.format;
@@ -27,10 +29,12 @@ import static me.choketa.crazyeggs.utils.ColorUtils.format;
 public class EggListener implements Listener {
     private final CrazyEggs plugin;
     private final EggManager manager;
+    private final HashMap<UUID, HashMap<PluginEgg, Long>> cooldown;
 
     public EggListener() {
         this.plugin = CrazyEggs.getPlugin();
         this.manager = EggManager.getEggManager();
+        cooldown = new HashMap<>();
     }
 
     //Makes the damage-type impact to happen
@@ -112,12 +116,35 @@ public class EggListener implements Listener {
         if (!(event.getEntity() instanceof Egg)) {
             return;
         }
-        if (manager.getEggByPDC(item) == null) return;
-        if (!player.hasPermission("crazyeggs.use")) {
+        PluginEgg egg = manager.getEggByPDC(item);
+        if (egg == null) return;
+        if (!player.hasPermission("crazyeggs."+egg.getSimpleName()+".use")) {
             event.setCancelled(true);
-            player.sendMessage(format("&c[CrazyEggs] You are not allowed to use the egg!"));
+            player.sendMessage("crazyeggs."+egg.getSimpleName()+".use");
+            player.sendMessage(format("&c[CrazyEggs] You are not allowed to use this egg!"));
+            return;
         }
+        if (player.hasPermission("crazyeggs."+egg.getSimpleName()+".bypass.cooldown") || egg.getInteger("cooldown") <= 0) return;
+        UUID id = player.getUniqueId();
+        if (!cooldown.containsKey(id)) {
+            HashMap<PluginEgg, Long> newMap = new HashMap<>();
+            newMap.put(egg, System.currentTimeMillis());
+            cooldown.put(id, newMap);
+        }
+        else {
+            HashMap<PluginEgg, Long> map = cooldown.get(id);
+            long timeElapsed = System.currentTimeMillis() - map.get(egg);
+            int cooldowns = plugin.getConfig().getInt("cooldown");
+            if (timeElapsed >= (cooldowns * 1000L)) {
+                map.put(egg, System.currentTimeMillis());
+                cooldown.put(player.getUniqueId(), map);
+            }
 
+            else {
+                player.sendMessage(format("&c[CrazyEggs] You are in a cooldown. &e"+((cooldowns*1000L - timeElapsed)/1000)+" &cmore seconds."));
+                event.setCancelled(true);
+            }
+        }
     }
 
     //Disables the egg hatching
@@ -148,23 +175,14 @@ public class EggListener implements Listener {
         if (player == null) return;
         ItemStack result = event.getInventory().getResult();
         if (result == null) return;
+        if (!event.getInventory().contains(Material.EGG)) return;
 
         for (PluginEgg egg : manager.getEggs()) {
-            if (!event.getInventory().contains(Material.EGG) || !event.getInventory().contains(egg.getEggItem())) continue;
+            if (!event.getInventory().contains(egg.getEggItem())) continue;
             if (!result.isSimilar(egg.getEggItem())) continue;
             if (player.hasPermission("crazyeggs." + egg.getSimpleName() + ".craft")) continue;
             event.getInventory().setResult(new ItemStack(Material.AIR));
             return;
-        }
-        //It starts from index 1 to exclude the result slot
-        for (int i = 1; i <= event.getInventory().getMatrix().length; i++) {
-            ItemStack item = event.getInventory().getItem(i);
-            if (item == null) continue;
-            for (PluginEgg egg : manager.getEggs()) {
-                if (!egg.getEggItem().isSimilar(item)) continue;
-                event.getInventory().setResult(new ItemStack(Material.AIR));
-                return;
-            }
         }
     }
 }

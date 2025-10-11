@@ -3,8 +3,8 @@ package me.choketa.crazyeggs.eggs.eggs;
 import me.choketa.crazyeggs.eggs.EggPermissions;
 import me.choketa.crazyeggs.eggs.EggRecipe;
 import me.choketa.crazyeggs.utils.ColorUtils;
-import me.choketa.crazyeggs.utils.EggUtils;
 import me.choketa.crazyeggs.utils.Pair;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
@@ -27,10 +27,9 @@ import java.util.*;
 import static me.choketa.crazyeggs.CrazyEggs.getPlugin;
 
 public class PluginEgg {
-    protected final boolean isOld;
+    public final boolean isOld;
     private final String name;
     private final String simpleName;
-    private String displayName;
     private ItemStack eggItem;
     private final File file;
     private YamlConfiguration customFile;
@@ -55,7 +54,6 @@ public class PluginEgg {
         cache = new HashMap<>();
         customFile = YamlConfiguration.loadConfiguration(file);
         customFile.options().copyDefaults(true);
-        this.displayName = !isOld ? "&#b32222&l" + name.replace('_', ' ') : get("display-name");
         if (!isOld)
             setDefaults();
         save();
@@ -63,11 +61,11 @@ public class PluginEgg {
             cache.put(str, get(str));
 
         key = new NamespacedKey(getPlugin(), "crazyeggs" + name);
-        if (getBoolean("is-craftable"))
-           new EggRecipe(this);
         new EggPermissions(this);
     }
-
+    public void initializeRecipe() {
+        if (getBoolean("is-craftable")) new EggRecipe(this);
+    }
     public <T> T get(String path) {
         return (T) cache.getOrDefault(path, (T) customFile.get(path));
     }
@@ -84,6 +82,9 @@ public class PluginEgg {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        cache.clear();
+        for (String str : customFile.getKeys(false))
+            cache.put(str, get(str));
         return customFile;
     }
 
@@ -92,13 +93,12 @@ public class PluginEgg {
         cache.clear();
         for (String str : customFile.getKeys(false))
             cache.put(str, get(str));
-        displayName = get("display-name");
         return customFile;
     }
 
     public void setDefaults() {
         set("display-name",
-                displayName,
+                "&#b32222&l" + name.replace('_', ' '),
                 Collections.singletonList("The name of the egg item"));
 
         set("lore",
@@ -112,9 +112,10 @@ public class PluginEgg {
                 List.of("EEE", "ETE", "EEE"),
                 Collections.singletonList("The crafting layout for the recipe"));
         set("materials",
-                Map.of('E', "EGG", 'T', "TNT"),
+                null,
                 Collections.singletonList("The materials that correspond to each letter"));
-
+        set("materials.E", "EGG");
+        set("materials.T", "TNT");
 
         set("upon-craft-amount",
                 4,
@@ -148,7 +149,7 @@ public class PluginEgg {
 
         set("cooldown",
                 10,
-                Collections.singletonList("Cooldown for the destruction egg. Input in seconds"));
+                Collections.singletonList("Cooldown for the egg. Input in seconds"));
 
         set("should-set-fire",
                 false,
@@ -174,14 +175,21 @@ public class PluginEgg {
         set("custom-model-data", -1, Collections.singletonList("For resourcepacks"));
     }
 
+    private List<Component> adaptLore(List<String> lore) {
+        List<Component> actualLore = new ArrayList<>();
+        for (String str : lore)
+            actualLore.add(ColorUtils.format(str));
+        return actualLore;
+    }
+
     public ItemStack getEggItem() {
         if (eggItem == null) {
             this.eggItem = new ItemStack(Material.EGG);
             eggItem.editMeta(meta -> {
-                meta.itemName(ColorUtils.format(displayName));
+                meta.itemName(ColorUtils.format(get("display-name")));
                 List<String> lore = get("lore");
                 if (lore != null && !lore.isEmpty())
-                    meta.lore(EggUtils.adaptLore(lore));
+                    meta.lore(adaptLore(lore));
                 if (get("set-glint")) {
                     meta.addEnchant(Enchantment.UNBREAKING, 1, false);
                     meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
@@ -204,7 +212,7 @@ public class PluginEgg {
         customFile.set(path, obj);
     }
 
-    //e.g Crazy_eggs
+    //e.g. Crazy_eggs
     public String getName() {
         return name;
     }
@@ -214,10 +222,20 @@ public class PluginEgg {
     }
     //E.g &cCrazy Eggs!!!!!!!
     public String getDisplayName() {
-        return displayName;
+        return get("display-name");
     }
     public NamespacedKey getKey() {
         return key;
+    }
+    public double getDouble(String path) {
+        return get(path);
+    }
+    public FileConfiguration getConfig() {
+        return customFile;
+    }
+
+    public int getInteger(String path) {
+        return get(path);
     }
 
     public List<Pair<Sound, Pair<Float, Float>>> getImpactSounds() {
@@ -259,7 +277,4 @@ public class PluginEgg {
         return potionEffects;
     }
 
-    public double getDouble(String path) {
-        return customFile.getDouble(path);
-    }
 }
