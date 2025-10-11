@@ -38,7 +38,7 @@ public final class CrazyEggs extends JavaPlugin {
         new UpdateChecker().getVersion(version -> {
             String curr = "\""+getDescription().getVersion()+"\"";
             if (version.replaceFirst("r\":\"[0-9]\\.[0-9]+\\.[0-9]+(\\.[0-9]+)?\"", "r\":"+curr).equals(version)) {
-                getLogger().info("There is not a new update available.");
+                getLogger().info("There isn't a new update available.");
             } else {
                 getLogger().warning("There is a new update available!");
                 getLogger().warning("Go to https://modrinth.com/plugin/crazy-eggs in order to update!");

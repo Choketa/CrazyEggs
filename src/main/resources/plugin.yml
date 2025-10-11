@@ -20,7 +20,9 @@ permissions:
   crazyeggs.getegg:
     description: Allows you to perform the /getegg command
     default: op
-
+  crazyeggs.updatechecker:
+    description: Allows you to see whether the plugin has an update in chat when joining the server
+    default: op
 
 
 
