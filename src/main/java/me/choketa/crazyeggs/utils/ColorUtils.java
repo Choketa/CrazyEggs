@@ -15,7 +15,7 @@ public class ColorUtils {
                 .hexColors()
                 .build();
     }
-    private static final MiniMessage MINI_MESSAGE = MiniMessage.builder()
+    private static final MiniMessage MINIMESSAGE = MiniMessage.builder()
             .tags(TagResolver.builder()
                     .resolver(StandardTags.color())
                     .resolver(StandardTags.decorations())
@@ -26,7 +26,7 @@ public class ColorUtils {
 
     public static Component format(String str) {
         if (str == null) return null;
-        return SERIALIZER.deserialize(SERIALIZER.serialize(MINI_MESSAGE.deserialize(str)));
+        return SERIALIZER.deserialize(SERIALIZER.serialize(MINIMESSAGE.deserialize(str)));
     }
 }
 
