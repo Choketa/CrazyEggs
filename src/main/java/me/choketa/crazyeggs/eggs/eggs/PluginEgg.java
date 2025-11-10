@@ -35,13 +35,13 @@ public class PluginEgg {
     private YamlConfiguration customFile;
     private final Map<String, Object> cache;
     private final NamespacedKey key;
-    private List<Pair<Sound, Pair<Float, Float>>>impactSounds;
+    private List<Pair<Sound, Pair<Float, Float>>> impactSounds;
     private List<Pair<Particle, Integer>> particles;
     private List<PotionEffect> potionEffects;
 
     public PluginEgg(String name) {
         this.name = name;
-        this.simpleName = name.replace("_","").toLowerCase();
+        this.simpleName = name.replace("_", "").toLowerCase();
         this.file = new File(getPlugin().getDataFolder() + "/eggs", name + ".yml");
         this.isOld = file.exists();
         if (!isOld) {
@@ -63,15 +63,19 @@ public class PluginEgg {
         key = new NamespacedKey(getPlugin(), "crazyeggs" + name);
         new EggPermissions(this);
     }
+
     public void initializeRecipe() {
         if (getBoolean("is-craftable")) new EggRecipe(this);
     }
+
     public <T> T get(String path) {
         return (T) cache.getOrDefault(path, (T) customFile.get(path));
     }
+
     public float getFloat(String path) {
         return (float) (customFile.getDouble(path));
     }
+
     public boolean getBoolean(String path) {
         return customFile.getBoolean(path);
     }
@@ -162,7 +166,7 @@ public class PluginEgg {
 
         set("impact-sounds",
                 List.of("ENTITY_LIGHTNING_BOLT_IMPACT,1.0,1.0")
-                ,List.of("The sounds played when the egg hits an entity",
+                , List.of("The sounds played when the egg hits an entity",
                         "Parameters: Sound name, volume, pitch"));
 
         set("set-glint",
@@ -171,7 +175,7 @@ public class PluginEgg {
 
         set("potion-effects",
                 List.of(new PotionEffect(PotionEffectType.SLOWNESS, 100, 0, true, true).serialize())
-                ,Collections.singletonList("The potion effects to apply on entity upon impact"));
+                , Collections.singletonList("The potion effects to apply on entity upon impact"));
         set("custom-model-data", -1, Collections.singletonList("For resourcepacks"));
     }
 
@@ -208,6 +212,7 @@ public class PluginEgg {
         if (description != null)
             customFile.setComments(path, description);
     }
+
     public void set(@NotNull String path, Object obj) {
         customFile.set(path, obj);
     }
@@ -216,20 +221,25 @@ public class PluginEgg {
     public String getName() {
         return name;
     }
+
     //e.g crazyeggs
     public String getSimpleName() {
         return simpleName;
     }
+
     //E.g &cCrazy Eggs!!!!!!!
     public String getDisplayName() {
         return get("display-name");
     }
+
     public NamespacedKey getKey() {
         return key;
     }
+
     public double getDouble(String path) {
         return get(path);
     }
+
     public FileConfiguration getConfig() {
         return customFile;
     }
@@ -241,13 +251,12 @@ public class PluginEgg {
     public List<Pair<Sound, Pair<Float, Float>>> getImpactSounds() {
         if (impactSounds == null) {
             List<String> soundString = get("impact-sounds");
-            if (soundString != null && !soundString.isEmpty()) {
-                impactSounds = new ArrayList<>();
-                for (String s : soundString) {
-                    String[] process = s.split(",");
-                    impactSounds.add(new Pair<>(Sound.valueOf(process[0]),
-                            new Pair<>(Float.parseFloat(process[1]), Float.parseFloat(process[2]))));
-                }
+            if (soundString == null || soundString.isEmpty()) return null;
+            impactSounds = new ArrayList<>();
+            for (String s : soundString) {
+                String[] process = s.split(",");
+                impactSounds.add(new Pair<>(Sound.valueOf(process[0]),
+                        new Pair<>(Float.parseFloat(process[1]), Float.parseFloat(process[2]))));
             }
         }
         return impactSounds;
@@ -256,12 +265,11 @@ public class PluginEgg {
     public List<Pair<Particle, Integer>> getParticles() {
         if (particles == null) {
             List<String> particleString = get("impact-particles");
-            if (particleString != null && !particleString.isEmpty()) {
-                particles = new ArrayList<>();
-                for (String s : particleString) {
-                    String[] process = s.split(",");
-                    particles.add(new Pair<>(Particle.valueOf(process[0]), Integer.parseInt(process[1])));
-                }
+            if (particleString == null || particleString.isEmpty()) return null;
+            particles = new ArrayList<>();
+            for (String s : particleString) {
+                String[] process = s.split(",");
+                particles.add(new Pair<>(Particle.valueOf(process[0]), Integer.parseInt(process[1])));
             }
         }
         return particles;
