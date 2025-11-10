@@ -1,7 +1,6 @@
 package me.choketa.crazyeggs.eggs;
 
 import me.choketa.crazyeggs.CrazyEggs;
-import me.choketa.crazyeggs.eggs.eggs.PluginEgg;
 import me.choketa.crazyeggs.utils.Pair;
 import org.bukkit.*;
 import org.bukkit.entity.Egg;

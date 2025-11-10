@@ -1,7 +1,7 @@
 package me.choketa.crazyeggs.commands;
 
 import me.choketa.crazyeggs.eggs.EggManager;
-import me.choketa.crazyeggs.eggs.eggs.PluginEgg;
+import me.choketa.crazyeggs.eggs.PluginEgg;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;

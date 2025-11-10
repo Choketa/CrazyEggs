@@ -1,7 +1,5 @@
-package me.choketa.crazyeggs.eggs.eggs;
+package me.choketa.crazyeggs.eggs;
 
-import me.choketa.crazyeggs.eggs.EggPermissions;
-import me.choketa.crazyeggs.eggs.EggRecipe;
 import me.choketa.crazyeggs.utils.ColorUtils;
 import me.choketa.crazyeggs.utils.Pair;
 import net.kyori.adventure.text.Component;

@@ -1,6 +1,5 @@
 package me.choketa.crazyeggs.eggs;
 
-import me.choketa.crazyeggs.eggs.eggs.PluginEgg;
 import org.bukkit.permissions.PermissionDefault;
 
 

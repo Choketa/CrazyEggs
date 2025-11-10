@@ -1,7 +1,6 @@
 package me.choketa.crazyeggs.eggs;
 
 import me.choketa.crazyeggs.CrazyEggs;
-import me.choketa.crazyeggs.eggs.eggs.PluginEgg;
 import org.bukkit.Material;
 import org.bukkit.entity.Egg;
 import org.bukkit.entity.Projectile;
