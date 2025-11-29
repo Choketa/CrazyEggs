@@ -18,7 +18,7 @@ dependencies {
 
 
 group = "me.chocketa"
-version = "1.2.0.2"
+version = "1.2.0.3"
 description = "CrazyEggs"
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(21))

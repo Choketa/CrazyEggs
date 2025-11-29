@@ -1,5 +1,5 @@
 name: CrazyEggs
-version: '1.2.0.2'
+version: '1.2.0.3'
 main: me.choketa.crazyeggs.CrazyEggs
 api-version: '1.21'
 authors: [Chocketa]
