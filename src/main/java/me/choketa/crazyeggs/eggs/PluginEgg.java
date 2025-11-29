@@ -78,7 +78,7 @@ public class PluginEgg {
         return customFile.getBoolean(path);
     }
 
-    public FileConfiguration save() {
+    public void save() {
         try {
             customFile.save(file);
         } catch (IOException e) {
@@ -87,15 +87,14 @@ public class PluginEgg {
         cache.clear();
         for (String str : customFile.getKeys(false))
             cache.put(str, get(str));
-        return customFile;
     }
 
-    public FileConfiguration reload() {
+    public void reload() {
         customFile = YamlConfiguration.loadConfiguration(file);
         cache.clear();
         for (String str : customFile.getKeys(false))
             cache.put(str, get(str));
-        return customFile;
+        eggItem = null;
     }
 
     public void setDefaults() {

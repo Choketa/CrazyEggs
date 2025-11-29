@@ -1,11 +1,14 @@
 package me.choketa.crazyeggs;
 
 import me.choketa.crazyeggs.commands.GetEgg;
+import me.choketa.crazyeggs.commands.ReloadEggs;
 import me.choketa.crazyeggs.eggs.EggManager;
 import me.choketa.crazyeggs.listeners.OnOpJoinEvent;
 import me.choketa.crazyeggs.utils.UpdateChecker;
 import org.bukkit.NamespacedKey;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -28,12 +31,8 @@ public final class CrazyEggs extends JavaPlugin {
         EggManager.getEggManager().loadEggs();
         getServer().getPluginManager().registerEvents(new OnOpJoinEvent(), this);
 
-        GetEgg testEgg = new GetEgg();
-        PluginCommand testEggCmd = getCommand("giveegg");
-
-        testEggCmd.setExecutor(testEgg);
-        testEggCmd.setTabCompleter(testEgg);
-
+        registerCmd(new GetEgg(), "giveegg");
+        registerCmd(new ReloadEggs(), "reloadeggs");
 
         new UpdateChecker().getVersion(version -> {
             String curr = "\""+getDescription().getVersion()+"\"";
@@ -44,6 +43,12 @@ public final class CrazyEggs extends JavaPlugin {
                 getLogger().warning("Go to https://modrinth.com/plugin/crazy-eggs in order to update!");
             }
         });
+    }
+    private <T extends CommandExecutor> void registerCmd(T obj, String cmdName) {
+        PluginCommand setCmd = getCommand(cmdName);
+        setCmd.setExecutor(obj);
+        if (obj instanceof TabCompleter)
+         setCmd.setTabCompleter((TabCompleter) obj);
     }
     private Permission getPermission(String name) {
         return getServer().getPluginManager().getPermission(name);

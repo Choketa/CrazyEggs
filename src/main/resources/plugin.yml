@@ -8,6 +8,9 @@ commands:
   giveegg:
     permission: crazyeggs.getegg
     usage: /giveegg <player> <egg_type> <amount>
+  reloadeggs:
+    permission: crazyeggs.reloadeggs
+    description: Reloads all the eggs in the config
 
 permissions:
   crazyeggs.createegg:
@@ -22,6 +25,9 @@ permissions:
     default: op
   crazyeggs.updatechecker:
     description: Allows you to see whether the plugin has an update in chat when joining the server
+    default: op
+  crazyeggs.reloadeggs:
+    description: Allows you to use the /reloadeggs command
     default: op
 
 
