@@ -3,10 +3,8 @@ package me.choketa.crazyeggs.eggs;
 import me.choketa.crazyeggs.CrazyEggs;
 import me.choketa.crazyeggs.utils.Pair;
 import org.bukkit.*;
-import org.bukkit.entity.Egg;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
+import org.bukkit.block.Block;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileHitEvent;
@@ -36,6 +34,18 @@ public class EggListener implements Listener {
         cooldown = new HashMap<>();
     }
 
+    private void playSoundsAndParticles(PluginEgg egg, World world, Location loc) {
+        List<Pair<Sound, Pair<Float, Float>>> impactSounds = egg.getImpactSounds();
+        List<Pair<Particle, Integer>> particles = egg.getParticles();
+        if (impactSounds != null) {
+            for (Pair<Sound, Pair<Float, Float>> pair : impactSounds)
+                world.playSound(loc, pair.a(), pair.b().a(), pair.b().a());
+        }
+        if (particles != null) {
+            for (Pair<Particle, Integer> particle : particles)
+                world.spawnParticle(particle.a(), loc, particle.b());
+        }
+    }
     //Makes the damage-type impact to happen
     @EventHandler
     public void onHit(ProjectileHitEvent event) {
@@ -51,20 +61,12 @@ public class EggListener implements Listener {
         World world = hitEntity.getWorld();
         Location location = hitEntity.getLocation();
 
-        List<Pair<Sound, Pair<Float, Float>>> impactSounds = egg.getImpactSounds();
-        List<Pair<Particle, Integer>> particles = egg.getParticles();
         List<PotionEffect> potionEffects = egg.getPotionEffects();
 
         hitEntity.damage(egg.get("damage"));
 
-        if (impactSounds != null) {
-            for (Pair<Sound, Pair<Float, Float>> pair : impactSounds)
-                world.playSound(hitEntity, pair.a(), pair.b().a(), pair.b().a());
-        }
-        if (particles != null) {
-            for (Pair<Particle, Integer> particle : particles)
-                world.spawnParticle(particle.a(), location, particle.b());
-        }
+        playSoundsAndParticles(egg, world, location);
+
         if (potionEffects != null) {
             for (PotionEffect effect : potionEffects)
                 hitEntity.addPotionEffect(effect);
@@ -103,6 +105,30 @@ public class EggListener implements Listener {
 
         float power = egg.getFloat("power");
         player.getWorld().createExplosion(proj.getLocation(), power, egg.get("should-set-fire"));
+    }
+    @EventHandler
+    public void onBlockHit(ProjectileHitEvent event) {
+        if (!(event.getEntity().getShooter() instanceof Player player))
+            return;
+        Projectile proj = event.getEntity();
+        PluginEgg egg = manager.getEggByPDC(proj);
+        if (egg == null) return;
+        Block block = event.getHitBlock();
+        if (block == null) return;
+        if (!egg.getBoolean("should-affect-blocks")) return;
+        World world = player.getWorld();
+        Location loc = block.getLocation();
+
+        playSoundsAndParticles(egg, world, loc);
+
+        FallingBlock fallingBlock = player.getWorld().spawn(loc,
+                FallingBlock.class);
+        fallingBlock.setBlockData(block.getBlockData());
+        block.setType(Material.AIR);
+
+        Vector direction = event.getEntity().getVelocity().multiply(egg.getDouble("velocity-multiplier"));
+        fallingBlock.setVelocity(direction.setY(egg.getDouble("velocity-set-y")));
+        fallingBlock.setVelocity(direction);
     }
 
     @EventHandler

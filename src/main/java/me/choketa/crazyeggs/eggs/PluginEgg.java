@@ -144,6 +144,10 @@ public class PluginEgg {
                 false,
                 Collections.singletonList("Determines whether the egg explodes on impact"));
 
+        set("should-affect-blocks",
+                false,
+                Collections.singletonList("Determines whether the egg affects blocks"));
+
         set("power",
                 8.0,
                 Collections.singletonList("Determines the power of the explosion caused by the egg (For reference, 4 is the power of regular TNT)"));
