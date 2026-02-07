@@ -6,8 +6,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-
-
 import static me.choketa.crazyeggs.CrazyEggs.getPlugin;
 import static me.choketa.crazyeggs.utils.ColorUtils.format;
 
@@ -18,11 +16,11 @@ public class OnOpJoinEvent implements Listener {
         Player player = event.getPlayer();
         if (!player.isOp() && !player.hasPermission("crazyeggs.updatechecker")) return;
         new UpdateChecker().getVersion(version -> {
-            String curr = "\""+getPlugin().getDescription().getVersion()+"\"";
-            if (!version.replaceFirst("r\":\"[0-9]\\.[0-9]+\\.[0-9]+(\\.[0-9]+)?\"", "r\":"+curr).equals(version)) {
-               player.sendMessage(format("&4[CrazyEggs]: &6There is a new update available!"));
-               player.sendMessage(format("&4[CrazyEggs]: &6Go to https://modrinth.com/plugin/crazy-eggs in order to update!"));
-            }
+            String curr = "\"" + getPlugin().getDescription().getVersion() + "\"";
+            if (version.replaceFirst("r\":\"[0-9]\\.[0-9]+\\.[0-9]+(\\.[0-9]+)?\"", "r\":" + curr).equals(version))
+                return;
+            player.sendMessage(format("&4[CrazyEggs]: &6There is a new update available!"));
+            player.sendMessage(format("&4[CrazyEggs]: &6Go to https://modrinth.com/plugin/crazy-eggs in order to update!"));
         });
     }
 }
