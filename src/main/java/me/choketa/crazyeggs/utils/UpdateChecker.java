@@ -15,7 +15,6 @@ import static me.choketa.crazyeggs.CrazyEggs.getPlugin;
 
 public class UpdateChecker {
 
-
     public UpdateChecker() {}
 
     public void getVersion(final Consumer<String> consumer) {

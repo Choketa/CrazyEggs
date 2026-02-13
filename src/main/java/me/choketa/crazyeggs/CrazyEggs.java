@@ -23,6 +23,8 @@ public final class CrazyEggs extends JavaPlugin {
     private static CrazyEggs plugin;
     private final Set<NamespacedKey> recipes = new HashSet<>();
     public static final Random RANDOM = new Random();
+    private boolean hasUpdate = false;
+
     @Override
     public void onEnable() {
         plugin = this;
@@ -39,6 +41,7 @@ public final class CrazyEggs extends JavaPlugin {
             if (version.replaceFirst("r\":\"[0-9]\\.[0-9]+\\.[0-9]+(\\.[0-9]+)?\"", "r\":"+curr).equals(version)) {
                 getLogger().info("There isn't a new update available.");
             } else {
+                hasUpdate = true;
                 getLogger().warning("There is a new update available!");
                 getLogger().warning("Go to https://modrinth.com/plugin/crazy-eggs in order to update!");
             }
@@ -85,5 +88,8 @@ public final class CrazyEggs extends JavaPlugin {
     }
     public Set<NamespacedKey> getRecipes() {
         return this.recipes;
+    }
+    public boolean hasUpdate() {
+        return hasUpdate;
     }
 }
