@@ -87,10 +87,7 @@ public class EggManager {
         return eggs;
     }
 
-    public PluginEgg getEggByPDC(Projectile entity) {
-        if (!(entity instanceof Egg egg)) return null;
-        ItemStack item = egg.getItem();
-        ItemMeta meta = item.getItemMeta();
+    private PluginEgg getEggByPDC(ItemMeta meta) {
         if (meta == null) return null;
         PersistentDataContainer pdc = meta.getPersistentDataContainer();
         for (PluginEgg pluginEgg : eggs)
@@ -98,13 +95,13 @@ public class EggManager {
         return null;
     }
 
+    public PluginEgg getEggByPDC(Projectile entity) {
+        if (!(entity instanceof Egg egg)) return null;
+        return getEggByPDC(egg.getItem().getItemMeta());
+    }
+
     public PluginEgg getEggByPDC(ItemStack item) {
         if (item.getType() != Material.EGG) return null;
-        ItemMeta meta = item.getItemMeta();
-        if (meta == null) return null;
-        PersistentDataContainer pdc = meta.getPersistentDataContainer();
-        for (PluginEgg pluginEgg : eggs)
-            if (pdc.has(pluginEgg.getKey())) return pluginEgg;
-        return null;
+        return getEggByPDC(item.getItemMeta());
     }
 }
